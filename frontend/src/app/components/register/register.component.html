@@ -1,1 +1,30 @@
-<p>register works!</p>
+<div [formGroup]="registerForm">
+<div class="po-sm-6 po-pl-2">
+  <span class="po-mb-2 po-mt-2" style="display: flex">{{'Location record' | translate}}</span>
+  <po-input
+    p-label="{{'Name' | translate}}"
+    formControlName="name">
+  </po-input>
+
+  <po-input
+    p-label="E-mail"
+    p-placeholder="{{'Enter your corporate email here' | translate}}"
+    formControlName="email">
+  </po-input>
+
+  <po-input
+    p-label="{{'Phone' | translate}}"
+    formControlName="phone">
+  </po-input>
+
+  <po-radio-group
+    name="type"
+    [p-options]="options">
+  </po-radio-group>
+
+  <po-button
+    p-label="{{'Submit' | translate}}" p-type="primary"
+    p-icon="po-icon po-icon-pin">
+  </po-button>
+</div>
+</div>
