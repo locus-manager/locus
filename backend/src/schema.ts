@@ -7,9 +7,18 @@ const User = objectType({
     t.model.id()
     t.model.name()
     t.model.email()
+    t.model.phone()
   },
 })
 
+const Place = objectType({
+  name: 'Place',
+  definition(t) {
+    t.model.id()
+    t.model.name()
+    t.model.code()
+  }
+})
 
 const Query = objectType({
   name: 'Query',
