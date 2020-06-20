@@ -2,28 +2,29 @@
 ### Do not make changes to this file directly
 
 
-scalar DateTime
+scalar Date
 
 type Mutation {
-  signupUser(data: UserCreateInput!): User!
+  createPlace(code: String!, name: String!): User!
+  createUser(email: String!, name: String!, phone: String!): User!
+  createUserOnPlace(code: String!, email: String!, name: String!, phone: String!, type: String!): User!
 }
 
-input PlaceCreateOneWithoutUsersOnPlacesInput {
-  connect: PlaceWhereUniqueInput
-  create: PlaceCreateWithoutUsersOnPlacesInput
-}
-
-input PlaceCreateWithoutUsersOnPlacesInput {
+type Place {
   code: String!
+  id: Int!
   name: String!
 }
 
 input PlaceWhereUniqueInput {
+  code: String
   id: Int
 }
 
 type Query {
-  users: [User!]!
+  places(after: PlaceWhereUniqueInput, before: PlaceWhereUniqueInput, first: Int, last: Int): [Place!]!
+  users(after: UserWhereUniqueInput, before: UserWhereUniqueInput, first: Int, last: Int): [User!]!
+  usersOnPlaces(after: UsersOnPlacesWhereUniqueInput, before: UsersOnPlacesWhereUniqueInput, first: Int, last: Int): [UsersOnPlaces!]!
 }
 
 type User {
@@ -33,29 +34,21 @@ type User {
   phone: String!
 }
 
-input UserCreateInput {
-  email: String!
-  name: String!
-  phone: String!
-  UsersOnPlaces: UsersOnPlacesCreateManyWithoutUserInput
-}
-
-input UserIdPlaceIdCompoundUniqueInput {
+type UsersOnPlaces {
+  checkInDate: Date
+  checkoutDate: Date
+  id: Int!
+  place: Place!
   placeId: Int!
+  user: User!
   userId: Int!
 }
 
-input UsersOnPlacesCreateManyWithoutUserInput {
-  connect: [UsersOnPlacesWhereUniqueInput!]
-  create: [UsersOnPlacesCreateWithoutUserInput!]
-}
-
-input UsersOnPlacesCreateWithoutUserInput {
-  checkInDate: DateTime
-  checkoutDate: DateTime!
-  place: PlaceCreateOneWithoutUsersOnPlacesInput!
-}
-
 input UsersOnPlacesWhereUniqueInput {
-  userId_placeId: UserIdPlaceIdCompoundUniqueInput
+  id: Int
+}
+
+input UserWhereUniqueInput {
+  email: String
+  id: Int
 }

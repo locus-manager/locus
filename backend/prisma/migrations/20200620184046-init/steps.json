@@ -164,6 +164,17 @@
       "arity": "Required"
     },
     {
+      "tag": "CreateDirective",
+      "location": {
+        "path": {
+          "tag": "Field",
+          "model": "Place",
+          "field": "code"
+        },
+        "directive": "unique"
+      }
+    },
+    {
       "tag": "CreateModel",
       "model": "UsersOnPlaces"
     },
@@ -278,7 +289,7 @@
       "model": "UsersOnPlaces",
       "field": "checkInDate",
       "type": "DateTime",
-      "arity": "Required"
+      "arity": "Optional"
     },
     {
       "tag": "CreateDirective",
@@ -310,7 +321,7 @@
       "model": "UsersOnPlaces",
       "field": "checkoutDate",
       "type": "DateTime",
-      "arity": "Required"
+      "arity": "Optional"
     },
     {
       "tag": "CreateDirective",
