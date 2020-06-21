@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, OnInit, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, ViewChild } from '@angular/core';
 import { ZXingScannerComponent } from '@zxing/ngx-scanner';
 
 @Component({
@@ -7,7 +7,7 @@ import { ZXingScannerComponent } from '@zxing/ngx-scanner';
   styleUrls: ['./qrcode.component.scss'],
 })
 // tslint:disable-next-line:component-class-suffix
-export class QrcodeComponent implements OnInit, AfterViewInit {
+export class QrcodeComponent implements AfterViewInit {
   @ViewChild('scanner') scanner: ZXingScannerComponent;
 
   hasDevices: boolean;
@@ -16,10 +16,6 @@ export class QrcodeComponent implements OnInit, AfterViewInit {
   availableDevices: MediaDeviceInfo[];
   currentDevice: MediaDeviceInfo = null;
   enableScanner = true;
-
-  constructor() {}
-
-  ngOnInit(): void {}
 
   ngAfterViewInit(): void {
     if (!this.enableScanner) { return; }

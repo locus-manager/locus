@@ -40,13 +40,12 @@ export function createTranslateLoad(http: HttpClient) {
       }
     })
   ],
-  providers: [],
   bootstrap: [AppComponent]
 })
 export class AppModule {
   constructor(private translateService: TranslateService) {
     translateService.addLangs(['en', 'pt']);
-    translateService.setDefaultLang('en');
+    translateService.setDefaultLang('pt');
     const browserLang = translateService.getBrowserLang();
     translateService.use(browserLang.match(/en|pt/) ? browserLang : 'en');
   }
