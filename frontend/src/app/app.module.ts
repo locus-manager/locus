@@ -7,12 +7,13 @@ import { PoModule } from '@po-ui/ng-components';
 import { RegisterComponent } from './components/register/register.component';
 import { GraphQLModule } from './graphql.module';
 import { HttpClientModule } from '@angular/common/http';
-import {ReactiveFormsModule} from '@angular/forms';
-import {TranslateLoader, TranslateModule, TranslateService} from "@ngx-translate/core";
-import {TranslateHttpLoader} from '@ngx-translate/http-loader';
-import {HttpClient} from "@angular/common/http";
-import {QrcodeComponent} from "./components/qrcode/qrcode.component";
-import {ZXingScannerModule} from '@zxing/ngx-scanner';
+import { ReactiveFormsModule } from '@angular/forms';
+import { TranslateLoader, TranslateModule, TranslateService } from '@ngx-translate/core';
+import { TranslateHttpLoader } from '@ngx-translate/http-loader';
+import { HttpClient } from '@angular/common/http';
+import { QrcodeComponent } from './components/qrcode/qrcode.component';
+import { ZXingScannerModule } from '@zxing/ngx-scanner';
+
 export function createTranslateLoad(http: HttpClient) {
   return new TranslateHttpLoader(http, './assets/i18n/', '.json');
 }
@@ -45,7 +46,7 @@ export function createTranslateLoad(http: HttpClient) {
 export class AppModule {
   constructor(private translateService: TranslateService) {
     translateService.addLangs(['en', 'pt']);
-    translateService.setDefaultLang['en'];
+    translateService.setDefaultLang('en');
     const browserLang = translateService.getBrowserLang();
     translateService.use(browserLang.match(/en|pt/) ? browserLang : 'en');
   }
