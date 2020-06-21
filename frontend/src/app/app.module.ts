@@ -11,6 +11,8 @@ import {ReactiveFormsModule} from '@angular/forms';
 import {TranslateLoader, TranslateModule, TranslateService} from "@ngx-translate/core";
 import {TranslateHttpLoader} from '@ngx-translate/http-loader';
 import {HttpClient} from "@angular/common/http";
+import {QrcodeComponent} from "./components/qrcode/qrcode.component";
+import {ZXingScannerModule} from '@zxing/ngx-scanner';
 export function createTranslateLoad(http: HttpClient) {
   return new TranslateHttpLoader(http, './assets/i18n/', '.json');
 }
@@ -18,7 +20,8 @@ export function createTranslateLoad(http: HttpClient) {
 @NgModule({
   declarations: [
     AppComponent,
-    RegisterComponent
+    RegisterComponent,
+    QrcodeComponent
   ],
   imports: [
     BrowserModule,
@@ -27,6 +30,7 @@ export function createTranslateLoad(http: HttpClient) {
     GraphQLModule,
     HttpClientModule,
     ReactiveFormsModule,
+    ZXingScannerModule,
     TranslateModule.forRoot( {
       loader: {
         provide: TranslateLoader,

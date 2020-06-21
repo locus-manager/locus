@@ -1,0 +1,24 @@
+<ng-container *ngIf="enableScanner">
+  <div *ngIf="currentDevice" class="scanner-overlay">
+    <div>
+      <div class="scanner-area"></div>
+    </div>
+  </div>
+
+  <zxing-scanner
+    #scanner
+    start="true"
+    hasNavigator
+    previewFitMode="fill"
+    [device]="currentDevice"
+    [formats]="['QR_CODE']"
+    (scanSuccess)="onSuccess($event)"
+  ></zxing-scanner>
+
+  <div class="information po-text-center">
+    <h1 class="po-font-title">{{ 'Scan the QR Code' | translate }}</h1>
+    <p class="po-font-text">
+      {{ 'To access, locate and scan the QR code' | translate }}
+    </p>
+  </div>
+</ng-container>
