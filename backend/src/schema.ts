@@ -43,15 +43,15 @@ const Query = objectType({
     t.list.field('activeCheckin', {
       type: 'UsersOnPlaces',
       args: {
-	email: stringArg({ nullable: false }),
+        email: stringArg({ nullable: false }),
       },
       resolve: async (_, { email }, ctx) => {
-	const users = await ctx.prisma.usersOnPlaces.findMany({
-	  where: { user: { email } },
-	  orderBy: { checkInDate: 'desc' },
-	})
+        const users = await ctx.prisma.usersOnPlaces.findMany({
+          where: { user: { email }, checkoutDate: null },
+          orderBy: { checkInDate: 'desc' },
+        })
 
-	return users.length > 0 ? [ users[0] ] : []
+        return users.length > 0 ? [users[0]] : []
       },
     })
   },
