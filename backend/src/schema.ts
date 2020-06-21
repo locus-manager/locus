@@ -93,21 +93,64 @@ const Mutation = objectType({
         code: stringArg({ nullable: false }),
 	checkin: stringArg({ nullable: true }),
       },
-      resolve: async (_, { name, email, phone, type, code, checkin }, ctx,
-      ) => {
+      resolve: async (_, { name, email, phone, type, code, checkin }, ctx) => {
         const user = await ctx.prisma.user.upsert({
           where: { email },
           update: { name, phone },
           create: { name, email, phone },
         })
 
-        return await ctx.prisma.usersOnPlaces.create({
-          data: {
-            user: { connect: { id: user.id } },
-            place: { connect: { code: code } },
-	    // checkinDate: new Date(),
-          },
-        })
+	const currentDate = new Date()
+
+	switch (type) {
+	  case 'checkin':
+	    // Must close the previous session setting current time
+	    await ctx.prisma.usersOnPlaces.updateMany({
+	      where: { user: { email }, checkoutDate: null },
+	      data: { checkoutDate: currentDate.toISOString() },
+	    })
+
+	    return await ctx.prisma.usersOnPlaces.create({
+	      data: {
+		user: { connect: { id: user.id } },
+		place: { connect: { code: code } },
+		checkinDate: currentDate.toISOString(),
+	      },
+	    })
+	  case 'checkout':
+	    const datesToBeUpdated: {
+	      checkinDate?: string
+	      checkoutDate?: string
+	    } = {}
+
+	    datesToBeUpdated.checkoutDate = currentDate.toISOString()
+	    if (checkin) {
+	      const [hour, minutes] = checkin.split(':')
+	      currentDate.setHours(Number(hour))
+	      currentDate.setMinutes(Number(minutes))
+	      datesToBeUpdated.checkinDate = currentDate.toISOString()
+	    }
+
+	    const openSessions = await ctx.prisma.usersOnPlaces.findMany({
+	      where: { user: { email }, checkoutDate: null },
+	      orderBy: { checkinDate: 'desc' },
+	    })
+
+	    const currentSession =
+	      openSessions.length > 0 ? openSessions[0] : { id: 0 }
+
+	    return await ctx.prisma.usersOnPlaces.upsert({
+	      where: { id: currentSession.id },
+	      create: {
+		user: { connect: { id: user.id } },
+		place: { connect: { code: code } },
+		...datesToBeUpdated,
+	      },
+	      update: {
+		...datesToBeUpdated,
+	      },
+	    })
+	}
       },
     })
   },
