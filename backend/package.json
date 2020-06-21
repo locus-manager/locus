@@ -3,7 +3,7 @@
   "scripts": {
     "start": "node dist/server",
     "clean": "rm -rf dist",
-    "build": "npm -s run clean && npm -s run generate && tsc",
+    "build": "npm -s run clean && NEXUS_SHOULD_GENERATE_ARTIFACTS=true npm -s run generate && tsc",
     "generate": "npm -s run generate:prisma && npm -s run generate:nexus",
     "generate:prisma": "prisma generate",
     "generate:nexus": "ts-node --transpile-only src/schema",
@@ -25,7 +25,7 @@
     "@types/node": "12.12.45",
     "ts-node": "8.10.2",
     "ts-node-dev": "1.0.0-pre.44",
-    "typescript": "3.8.3"
+    "typescript": "3.6.5"
   },
   "prettier": {
     "singleQuote": true,
