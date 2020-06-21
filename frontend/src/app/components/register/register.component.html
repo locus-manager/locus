@@ -8,23 +8,27 @@
       name="name"
       p-label="{{'Name' | translate}}"
       p-icon="po-icon-user"
+      p-clean="true"
       formControlName="name"
     ></po-input>
 
     <po-email
       name="email"
       p-label="E-mail"
+      p-clean="true"
       p-placeholder="{{'Enter your corporate email here' | translate}}"
       formControlName="email"
+      (p-change)="setName($event)"
     ></po-email>
 
     <po-input
       name="phone"
       p-label="{{'Phone' | translate}}"
       p-mask="(99) 99999?-9999"
+      [p-minlength]="11"
       p-icon="po-icon-telephone"
       p-mask-format-model="true"
-      [p-minlength]="11"
+      p-clean="true"
       formControlName="phone"
     ></po-input>
 

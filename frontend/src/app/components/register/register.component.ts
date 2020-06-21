@@ -65,6 +65,20 @@ export class RegisterComponent implements OnInit {
     this.fetchForm();
   }
 
+  public setName(event) {
+    const at = event.indexOf('@');
+    const domain = event.substring(at);
+
+    if (domain === '@***REMOVED***.com.br' && !this.registerForm.value.name) {
+      const emailName = event.substring(0, at);
+      const capitalize = emailName.split('.').map(w => w.substring(0, 1).toUpperCase() + w.substring(1)).join(' ');
+      this.registerForm.patchValue({
+        name: capitalize
+      });
+    }
+
+  }
+
   public submit({value, valid}: {value: any, valid: boolean}) {
     if (!valid) {
       this.markFormAsDirty(this.registerForm);
@@ -101,7 +115,6 @@ export class RegisterComponent implements OnInit {
     );
     this.registerService.register(value).subscribe(
       () => {
-        this.registerForm.reset();
         this.registerForm.markAsPristine();
         return this.poNotificationService.success({
           message: this.translateService.instant('Registration successful'),
@@ -143,5 +156,4 @@ export class RegisterComponent implements OnInit {
       control.controls.forEach(element => this.markControlAsDirty(element));
     }
   }
-
 }
