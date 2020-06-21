@@ -10,6 +10,7 @@ import {
   PoRadioGroupOption,
   PoToasterOrientation
 } from '@po-ui/ng-components';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-register',
@@ -22,8 +23,10 @@ export class RegisterComponent implements OnInit {
   public primaryAction: PoModalAction = {
     label: this.translateService.instant('Submit'),
     action: () => {
-      this.saveRegister(this.registerForm);
-      this.poModal.close();
+      if (this.registerForm.valid) {
+        this.saveRegister(this.registerForm);
+        this.poModal.close();
+      }
     }
   };
 
@@ -41,9 +44,10 @@ export class RegisterComponent implements OnInit {
   ];
 
   constructor(
+    private route: ActivatedRoute,
     private formBuilder: FormBuilder,
-    private translateService: TranslateService,
     private registerService: RegisterService,
+    private translateService: TranslateService,
     private storageService: LocalStorageService,
     private poNotificationService: PoNotificationService,
   ) { }
@@ -54,7 +58,7 @@ export class RegisterComponent implements OnInit {
       email: ['', Validators.required],
       phone: ['', Validators.required],
       type: ['', Validators.required],
-      code: ['ABC123'], //TODO: pegar do QrCode
+      code: [''],
       checkin: ['']
     });
 
@@ -80,22 +84,23 @@ export class RegisterComponent implements OnInit {
   }
 
   private fetchForm() {
+    const { code } = this.route.snapshot.queryParams;
     const register = this.storageService.getInStorage();
     if (register !== null) {
-      this.registerForm.patchValue({...register});
+      this.registerForm.patchValue(register);
+    }
+
+    if (code) {
+      this.registerForm.patchValue({ code });
     }
   }
 
   private saveRegister({value}: {value: any}) {
     this.storageService.setInStorage(
-      {
-        name: value.name,
-        email: value.email,
-        phone: value.phone
-      }
+      { name: value.name, email: value.email, phone: value.phone }
     );
     this.registerService.register(value).subscribe(
-      data => {
+      () => {
         this.registerForm.reset();
         this.registerForm.markAsPristine();
         return this.poNotificationService.success({
@@ -103,7 +108,7 @@ export class RegisterComponent implements OnInit {
           orientation: PoToasterOrientation.Top,
         });
       },
-      error => {
+      (error) => {
         console.error(error);
         return this.poNotificationService.error({
           message: this.translateService.instant('Sorry! An unexpected error occurred, please try again!'),
