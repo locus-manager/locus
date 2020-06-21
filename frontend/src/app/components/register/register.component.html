@@ -1,8 +1,8 @@
 <div [formGroup]="registerForm">
   <div class="po-sm-12 po-p-2">
-    <span class="po-mb-2 po-mt-2" style="display: flex">
+    <h2 class="po-mb-2 po-mt-2 po-font-subtitle">
       {{'Location record' | transloco}}
-    </span>
+    </h2>
 
     <po-email
       name="email"
@@ -35,6 +35,7 @@
     ></po-input>
 
     <po-radio-group
+      class="po-md-12"
       name="type"
       formControlName="type"
       [p-options]="options"
