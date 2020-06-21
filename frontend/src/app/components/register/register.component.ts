@@ -47,7 +47,7 @@ export class RegisterComponent implements OnInit {
     this.fetchForm();
     setTimeout(() => {
      this.initVariables();
-    }, 2);
+    }, 3);
   }
 
   public setName(event) {
