@@ -8,15 +8,10 @@ import { RegisterComponent } from './components/register/register.component';
 import { GraphQLModule } from './graphql.module';
 import { HttpClientModule } from '@angular/common/http';
 import { ReactiveFormsModule } from '@angular/forms';
-import { TranslateLoader, TranslateModule, TranslateService } from '@ngx-translate/core';
-import { TranslateHttpLoader } from '@ngx-translate/http-loader';
-import { HttpClient } from '@angular/common/http';
+import { TranslocoModule } from '@ngneat/transloco';
 import { QrcodeComponent } from './components/qrcode/qrcode.component';
 import { ZXingScannerModule } from '@zxing/ngx-scanner';
-
-export function createTranslateLoad(http: HttpClient) {
-  return new TranslateHttpLoader(http, './assets/i18n/', '.json');
-}
+import { TranslocoRootModule } from './transloco-root.module';
 
 @NgModule({
   declarations: [
@@ -32,21 +27,9 @@ export function createTranslateLoad(http: HttpClient) {
     HttpClientModule,
     ReactiveFormsModule,
     ZXingScannerModule,
-    TranslateModule.forRoot( {
-      loader: {
-        provide: TranslateLoader,
-        useFactory: createTranslateLoad,
-        deps: [HttpClient]
-      }
-    })
+    TranslocoModule,
+    TranslocoRootModule
   ],
   bootstrap: [AppComponent]
 })
-export class AppModule {
-  constructor(private translateService: TranslateService) {
-    translateService.addLangs(['en', 'pt']);
-    translateService.setDefaultLang('pt');
-    const browserLang = translateService.getBrowserLang();
-    translateService.use(browserLang.match(/en|pt/) ? browserLang : 'en');
-  }
-}
+export class AppModule {}

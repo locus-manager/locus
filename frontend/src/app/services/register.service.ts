@@ -24,29 +24,29 @@ export class RegisterService {
     }).pipe(pluck('data', 'activeCheckin'));
   }
 
-  register(register: Register) {
-    const mutationUserOnPlace = gql`
-      mutation userOnPlace(
+  createSession(register: Register) {
+    const mutationCreateSession = gql`
+      mutation createSession(
           $name: String!,
           $email: String!,
           $phone: String!,
           $type: String!,
           $code: String!,
-#          $checkin: String!,
+          $checkin: String!,
       ) {
-        createUserOnPlace(
+        createSession(
             name: $name
             email: $email
             phone: $phone
             type: $type
             code: $code
-#            checkIn: $checkin
+            checkIn: $checkin
         ) { id }
       }
     `;
 
     return this.apollo.mutate({
-      mutation: mutationUserOnPlace,
+      mutation: mutationCreateSession,
       variables: register
     });
   }
