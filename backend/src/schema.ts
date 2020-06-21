@@ -28,8 +28,8 @@ const UsersOnPlaces = objectType({
     t.model.userId()
     t.model.place()
     t.model.user()
-    t.model.checkoutDate({type: 'Date'})
-    t.model.checkInDate({ type: 'Date'})
+    t.model.checkoutDate({ type: 'Date' })
+    t.model.checkInDate({ type: 'Date' })
   },
 })
 
@@ -39,6 +39,21 @@ const Query = objectType({
     t.crud.users({ alias: 'users' })
     t.crud.places({ alias: 'places' })
     t.crud.usersOnPlaces({ alias: 'usersOnPlaces' })
+
+    t.list.field('activeCheckin', {
+      type: 'UsersOnPlaces',
+      args: {
+	email: stringArg({ nullable: false }),
+      },
+      resolve: async (_, { email }, ctx) => {
+	const users = await ctx.prisma.usersOnPlaces.findMany({
+	  where: { user: { email } },
+	  orderBy: { checkInDate: 'desc' },
+	})
+
+	return users.length > 0 ? [ users[0] ] : []
+      },
+    })
   },
 })
 
@@ -83,8 +98,7 @@ const Mutation = objectType({
           update: { name, phone },
           create: { name, email, phone },
         })
-        console.log(new Date().toISOString())
-        console.log(user);
+
         return await ctx.prisma.usersOnPlaces.create({
           data: {
             user: { connect: { id: user.id } },
@@ -98,9 +112,11 @@ const Mutation = objectType({
 
 export const schema = makeSchema({
   types: [Query, Mutation, User, Place, UsersOnPlaces],
-  plugins: [nexusPrismaPlugin({
-    experimentalCRUD: true
-  })],
+  plugins: [
+    nexusPrismaPlugin({
+      experimentalCRUD: true,
+    }),
+  ],
   outputs: {
     schema: __dirname + '/../schema.graphql',
     typegen: __dirname + '/generated/nexus.ts',
