@@ -17,16 +17,7 @@ export class QrcodeComponent implements OnInit, AfterViewInit {
   currentDevice: MediaDeviceInfo = null;
   enableScanner = true;
 
-  constructor() {
-    // const { code } = this.route.snapshot.queryParams;
-    //
-    // if (code) {
-    //   this.enableScanner = false;
-    //   this.onSuccess(code.replace(/ /g, '+'));
-    // } else {
-    //   this.enableScanner = true;
-    // }
-  }
+  constructor() {}
 
   ngOnInit(): void {}
 
