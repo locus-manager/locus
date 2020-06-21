@@ -10,4 +10,5 @@ export interface Register {
   phone: string;
   type: string; //'checkin' | 'checkout';
   code: string;
+  checkin: string;
 }

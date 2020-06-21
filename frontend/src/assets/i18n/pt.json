@@ -1,11 +1,17 @@
 {
-  "Entry": "Entrada",
-  "Exit": "Saída",
+  "Cancel": "Cancelar",
+  "Check in": "Entrada",
+  "Checkout": "Saída",
   "Submit": "Enviar",
   "Name": "Nome",
   "Enter your corporate email here": "Insira aqui seu e-mail corporativo",
   "Phone": "Telefone",
   "Location record": "Registro de Localização",
   "To access, locate and scan the QR code": "Para acessar localize e escaneie o QR code",
-  "Scan the QR Code": "Escaneie o QR code"
+  "Scan the QR Code": "Escaneie o QR code",
+  "What is the approximate time of checkin?": "Qual o horário aproximado da entrada?",
+  "There is no check-in": "Não há entrada",
+  "Verify the required fields": "Verifique os campos obrigatórios",
+  "Registration successful": "Registro efetuado com sucesso",
+  "Sorry! An unexpected error occurred, please try again!": "Desculpe! Ocorreu um erro não esperado, por favor tente novamente!"
 }
