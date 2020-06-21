@@ -8,7 +8,6 @@ export class LocalStorageService {
   private readonly USER = 'user';
 
   setInStorage(user: User) {
-    console.log('user', user);
     localStorage.setItem(this.USER, JSON.stringify(user));
   }
 
