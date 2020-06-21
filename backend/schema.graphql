@@ -7,7 +7,7 @@ scalar Date
 type Mutation {
   createPlace(code: String!, name: String!): User!
   createUser(email: String!, name: String!, phone: String!): User!
-  createUserOnPlace(code: String!, email: String!, name: String!, phone: String!, type: String!): User!
+  createUserOnPlace(checkin: String, code: String!, email: String!, name: String!, phone: String!, type: String!): UsersOnPlaces!
 }
 
 type Place {
@@ -36,7 +36,7 @@ type User {
 }
 
 type UsersOnPlaces {
-  checkInDate: Date
+  checkinDate: Date
   checkoutDate: Date
   id: Int!
   place: Place!

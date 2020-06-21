@@ -21,12 +21,11 @@ model Place {
 }
 
 model UsersOnPlaces {
+  id            Int        @default(autoincrement()) @id
   user          User       @relation(fields: [userId], references: [id])
   userId        Int        // relation scalar field (used in the `@relation` attribute above)
   place         Place      @relation(fields: [placeId], references: [id])
   placeId       Int        // relation scalar field (used in the `@relation` attribute above)
-  checkInDate   DateTime?  @default(now())
+  checkinDate   DateTime?  @default(now())
   checkoutDate  DateTime?
-
-  @@id([userId, placeId])
 }

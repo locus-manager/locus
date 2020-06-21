@@ -29,7 +29,7 @@ const UsersOnPlaces = objectType({
     t.model.place()
     t.model.user()
     t.model.checkoutDate({ type: 'Date' })
-    t.model.checkInDate({ type: 'Date' })
+    t.model.checkinDate({ type: 'Date' })
   },
 })
 
@@ -48,7 +48,7 @@ const Query = objectType({
       resolve: async (_, { email }, ctx) => {
         const users = await ctx.prisma.usersOnPlaces.findMany({
           where: { user: { email }, checkoutDate: null },
-          orderBy: { checkInDate: 'desc' },
+	  orderBy: { checkinDate: 'desc' },
         })
 
         return users.length > 0 ? [users[0]] : []
@@ -84,15 +84,17 @@ const Mutation = objectType({
     })
 
     t.field('createUserOnPlace', {
-      type: 'User',
+      type: 'UsersOnPlaces',
       args: {
         name: stringArg({ nullable: false }),
         email: stringArg({ nullable: false }),
         phone: stringArg({ nullable: false }),
         type: stringArg({ nullable: false }),
         code: stringArg({ nullable: false }),
+	checkin: stringArg({ nullable: true }),
       },
-      resolve: async (_, { name, email, phone, type, code }, ctx) => {
+      resolve: async (_, { name, email, phone, type, code, checkin }, ctx,
+      ) => {
         const user = await ctx.prisma.user.upsert({
           where: { email },
           update: { name, phone },
@@ -103,6 +105,7 @@ const Mutation = objectType({
           data: {
             user: { connect: { id: user.id } },
             place: { connect: { code: code } },
+	    // checkinDate: new Date(),
           },
         })
       },

@@ -8,8 +8,8 @@
     {
       "tag": "CreateArgument",
       "location": {
-        "tag": "Source",
-        "source": "db"
+	"tag": "Source",
+	"source": "db"
       },
       "argument": "provider",
       "value": "\"sqlite\""
@@ -17,8 +17,8 @@
     {
       "tag": "CreateArgument",
       "location": {
-        "tag": "Source",
-        "source": "db"
+	"tag": "Source",
+	"source": "db"
       },
       "argument": "url",
       "value": "\"file:./dev.db\""
@@ -37,24 +37,24 @@
     {
       "tag": "CreateDirective",
       "location": {
-        "path": {
-          "tag": "Field",
-          "model": "User",
-          "field": "id"
-        },
-        "directive": "default"
+	"path": {
+	  "tag": "Field",
+	  "model": "User",
+	  "field": "id"
+	},
+	"directive": "default"
       }
     },
     {
       "tag": "CreateArgument",
       "location": {
-        "tag": "Directive",
-        "path": {
-          "tag": "Field",
-          "model": "User",
-          "field": "id"
-        },
-        "directive": "default"
+	"tag": "Directive",
+	"path": {
+	  "tag": "Field",
+	  "model": "User",
+	  "field": "id"
+	},
+	"directive": "default"
       },
       "argument": "",
       "value": "autoincrement()"
@@ -62,12 +62,12 @@
     {
       "tag": "CreateDirective",
       "location": {
-        "path": {
-          "tag": "Field",
-          "model": "User",
-          "field": "id"
-        },
-        "directive": "id"
+	"path": {
+	  "tag": "Field",
+	  "model": "User",
+	  "field": "id"
+	},
+	"directive": "id"
       }
     },
     {
@@ -80,12 +80,12 @@
     {
       "tag": "CreateDirective",
       "location": {
-        "path": {
-          "tag": "Field",
-          "model": "User",
-          "field": "email"
-        },
-        "directive": "unique"
+	"path": {
+	  "tag": "Field",
+	  "model": "User",
+	  "field": "email"
+	},
+	"directive": "unique"
       }
     },
     {
@@ -116,24 +116,24 @@
     {
       "tag": "CreateDirective",
       "location": {
-        "path": {
-          "tag": "Field",
-          "model": "Place",
-          "field": "id"
-        },
-        "directive": "default"
+	"path": {
+	  "tag": "Field",
+	  "model": "Place",
+	  "field": "id"
+	},
+	"directive": "default"
       }
     },
     {
       "tag": "CreateArgument",
       "location": {
-        "tag": "Directive",
-        "path": {
-          "tag": "Field",
-          "model": "Place",
-          "field": "id"
-        },
-        "directive": "default"
+	"tag": "Directive",
+	"path": {
+	  "tag": "Field",
+	  "model": "Place",
+	  "field": "id"
+	},
+	"directive": "default"
       },
       "argument": "",
       "value": "autoincrement()"
@@ -141,12 +141,12 @@
     {
       "tag": "CreateDirective",
       "location": {
-        "path": {
-          "tag": "Field",
-          "model": "Place",
-          "field": "id"
-        },
-        "directive": "id"
+	"path": {
+	  "tag": "Field",
+	  "model": "Place",
+	  "field": "id"
+	},
+	"directive": "id"
       }
     },
     {
@@ -166,17 +166,60 @@
     {
       "tag": "CreateDirective",
       "location": {
-        "path": {
-          "tag": "Field",
-          "model": "Place",
-          "field": "code"
-        },
-        "directive": "unique"
+	"path": {
+	  "tag": "Field",
+	  "model": "Place",
+	  "field": "code"
+	},
+	"directive": "unique"
       }
     },
     {
       "tag": "CreateModel",
       "model": "UsersOnPlaces"
+    },
+    {
+      "tag": "CreateField",
+      "model": "UsersOnPlaces",
+      "field": "id",
+      "type": "Int",
+      "arity": "Required"
+    },
+    {
+      "tag": "CreateDirective",
+      "location": {
+	"path": {
+	  "tag": "Field",
+	  "model": "UsersOnPlaces",
+	  "field": "id"
+	},
+	"directive": "default"
+      }
+    },
+    {
+      "tag": "CreateArgument",
+      "location": {
+	"tag": "Directive",
+	"path": {
+	  "tag": "Field",
+	  "model": "UsersOnPlaces",
+	  "field": "id"
+	},
+	"directive": "default"
+      },
+      "argument": "",
+      "value": "autoincrement()"
+    },
+    {
+      "tag": "CreateDirective",
+      "location": {
+	"path": {
+	  "tag": "Field",
+	  "model": "UsersOnPlaces",
+	  "field": "id"
+	},
+	"directive": "id"
+      }
     },
     {
       "tag": "CreateField",
@@ -188,24 +231,24 @@
     {
       "tag": "CreateDirective",
       "location": {
-        "path": {
-          "tag": "Field",
-          "model": "UsersOnPlaces",
-          "field": "user"
-        },
-        "directive": "relation"
+	"path": {
+	  "tag": "Field",
+	  "model": "UsersOnPlaces",
+	  "field": "user"
+	},
+	"directive": "relation"
       }
     },
     {
       "tag": "CreateArgument",
       "location": {
-        "tag": "Directive",
-        "path": {
-          "tag": "Field",
-          "model": "UsersOnPlaces",
-          "field": "user"
-        },
-        "directive": "relation"
+	"tag": "Directive",
+	"path": {
+	  "tag": "Field",
+	  "model": "UsersOnPlaces",
+	  "field": "user"
+	},
+	"directive": "relation"
       },
       "argument": "fields",
       "value": "[userId]"
@@ -213,13 +256,13 @@
     {
       "tag": "CreateArgument",
       "location": {
-        "tag": "Directive",
-        "path": {
-          "tag": "Field",
-          "model": "UsersOnPlaces",
-          "field": "user"
-        },
-        "directive": "relation"
+	"tag": "Directive",
+	"path": {
+	  "tag": "Field",
+	  "model": "UsersOnPlaces",
+	  "field": "user"
+	},
+	"directive": "relation"
       },
       "argument": "references",
       "value": "[id]"
@@ -241,24 +284,24 @@
     {
       "tag": "CreateDirective",
       "location": {
-        "path": {
-          "tag": "Field",
-          "model": "UsersOnPlaces",
-          "field": "place"
-        },
-        "directive": "relation"
+	"path": {
+	  "tag": "Field",
+	  "model": "UsersOnPlaces",
+	  "field": "place"
+	},
+	"directive": "relation"
       }
     },
     {
       "tag": "CreateArgument",
       "location": {
-        "tag": "Directive",
-        "path": {
-          "tag": "Field",
-          "model": "UsersOnPlaces",
-          "field": "place"
-        },
-        "directive": "relation"
+	"tag": "Directive",
+	"path": {
+	  "tag": "Field",
+	  "model": "UsersOnPlaces",
+	  "field": "place"
+	},
+	"directive": "relation"
       },
       "argument": "fields",
       "value": "[placeId]"
@@ -266,13 +309,13 @@
     {
       "tag": "CreateArgument",
       "location": {
-        "tag": "Directive",
-        "path": {
-          "tag": "Field",
-          "model": "UsersOnPlaces",
-          "field": "place"
-        },
-        "directive": "relation"
+	"tag": "Directive",
+	"path": {
+	  "tag": "Field",
+	  "model": "UsersOnPlaces",
+	  "field": "place"
+	},
+	"directive": "relation"
       },
       "argument": "references",
       "value": "[id]"
@@ -287,31 +330,31 @@
     {
       "tag": "CreateField",
       "model": "UsersOnPlaces",
-      "field": "checkInDate",
+      "field": "checkinDate",
       "type": "DateTime",
       "arity": "Optional"
     },
     {
       "tag": "CreateDirective",
       "location": {
-        "path": {
-          "tag": "Field",
-          "model": "UsersOnPlaces",
-          "field": "checkInDate"
-        },
-        "directive": "default"
+	"path": {
+	  "tag": "Field",
+	  "model": "UsersOnPlaces",
+	  "field": "checkinDate"
+	},
+	"directive": "default"
       }
     },
     {
       "tag": "CreateArgument",
       "location": {
-        "tag": "Directive",
-        "path": {
-          "tag": "Field",
-          "model": "UsersOnPlaces",
-          "field": "checkInDate"
-        },
-        "directive": "default"
+	"tag": "Directive",
+	"path": {
+	  "tag": "Field",
+	  "model": "UsersOnPlaces",
+	  "field": "checkinDate"
+	},
+	"directive": "default"
       },
       "argument": "",
       "value": "now()"
@@ -322,29 +365,6 @@
       "field": "checkoutDate",
       "type": "DateTime",
       "arity": "Optional"
-    },
-    {
-      "tag": "CreateDirective",
-      "location": {
-        "path": {
-          "tag": "Model",
-          "model": "UsersOnPlaces"
-        },
-        "directive": "id"
-      }
-    },
-    {
-      "tag": "CreateArgument",
-      "location": {
-        "tag": "Directive",
-        "path": {
-          "tag": "Model",
-          "model": "UsersOnPlaces"
-        },
-        "directive": "id"
-      },
-      "argument": "",
-      "value": "[userId, placeId]"
     }
   ]
 }
