@@ -172,7 +172,9 @@ const Mutation = objectType({
 export const schema = makeSchema({
   types: [Query, Mutation, GQLDateTime, User, Place, Session],
   plugins: [
-    nexusPrismaPlugin(),
+    nexusPrismaPlugin({
+      experimentalCRUD: true
+    }),
   ],
   outputs: {
     schema: __dirname + '/../schema.graphql',
