@@ -1,14 +1,15 @@
 <div [formGroup]="registerForm">
   <div class="po-sm-12 po-p-2">
     <span class="po-mb-2 po-mt-2" style="display: flex">
-      {{'Location record' | translate}}
+      {{'Location record' | transloco}}
     </span>
 
     <po-input
       name="name"
-      p-label="{{'Name' | translate}}"
+      p-label="{{'Name' | transloco}}"
       p-icon="po-icon-user"
       p-clean="true"
+      p-placeholder="{{ 'Enter your name' | transloco }}"
       formControlName="name"
     ></po-input>
 
@@ -16,19 +17,20 @@
       name="email"
       p-label="E-mail"
       p-clean="true"
-      p-placeholder="{{'Enter your corporate email here' | translate}}"
+      p-placeholder="{{'Enter your corporate email here' | transloco}}"
       formControlName="email"
       (p-change)="setName($event)"
     ></po-email>
 
     <po-input
       name="phone"
-      p-label="{{'Phone' | translate}}"
+      p-label="{{'Phone' | transloco}}"
       p-mask="(99) 99999?-9999"
       [p-minlength]="11"
       p-icon="po-icon-telephone"
       p-mask-format-model="true"
       p-clean="true"
+      p-placeholder="{{ 'Enter your phone' | transloco }}"
       formControlName="phone"
     ></po-input>
 
@@ -39,7 +41,7 @@
     ></po-radio-group>
 
     <po-button
-      p-label="{{'Submit' | translate}}"
+      p-label="{{'Submit' | transloco}}"
       p-type="primary"
       p-icon="po-icon po-icon-pin"
       (p-click)="submit(registerForm)"
@@ -48,7 +50,7 @@
 
   <po-modal
     p-size="md"
-    p-title="{{'There is no check-in' | translate}}"
+    p-title="{{'There is no check-in' | transloco}}"
     [p-primary-action]="primaryAction"
     [p-secondary-action]="secondaryAction"
   >
@@ -56,7 +58,7 @@
       name="checkin"
       p-mask="hh:mm"
       p-pattern="^(2[0-3]|[01]?[0-9]):([0-5]?[0-9])$"
-      p-label="{{'What is the approximate time of checkin?' | translate}}"
+      p-label="{{'What is the approximate time of checkin?' | transloco}}"
       formControlName="checkin"
       p-mask-format-model="true"
     ></po-input>
