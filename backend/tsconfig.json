@@ -4,6 +4,7 @@
     "rootDir": "src",
     "lib": ["esnext"],
     "esModuleInterop": true,
+    "noImplicitAny": false,
     "strict": true
   },
   "include": ["src/**/*"]
