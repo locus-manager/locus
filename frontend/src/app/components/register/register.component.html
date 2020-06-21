@@ -4,15 +4,6 @@
       {{'Location record' | transloco}}
     </span>
 
-    <po-input
-      name="name"
-      p-label="{{'Name' | transloco}}"
-      p-icon="po-icon-user"
-      p-clean="true"
-      p-placeholder="{{ 'Enter your name' | transloco }}"
-      formControlName="name"
-    ></po-input>
-
     <po-email
       name="email"
       p-label="E-mail"
@@ -21,6 +12,15 @@
       formControlName="email"
       (p-change)="setName($event)"
     ></po-email>
+
+    <po-input
+      name="name"
+      p-label="{{'Name' | transloco}}"
+      p-icon="po-icon-user"
+      p-clean="true"
+      p-placeholder="{{ 'Enter your name' | transloco }}"
+      formControlName="name"
+    ></po-input>
 
     <po-input
       name="phone"
