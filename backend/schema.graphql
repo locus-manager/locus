@@ -2,12 +2,17 @@
 ### Do not make changes to this file directly
 
 
-scalar Date
+"""
+A date-time string at UTC, such as 2007-12-03T10:15:30Z, compliant with the
+`date-time` format outlined in section 5.6 of the RFC 3339 profile of the ISO
+8601 standard for representation of dates and times using the Gregorian calendar.
+"""
+scalar DateTime
 
 type Mutation {
   createPlace(code: String!, name: String!): User!
+  createSession(checkin: String, code: String!, email: String!, name: String!, phone: String!, type: String!): Session!
   createUser(email: String!, name: String!, phone: String!): User!
-  createUserOnPlace(checkin: String, code: String!, email: String!, name: String!, phone: String!, type: String!): UsersOnPlaces!
 }
 
 type Place {
@@ -16,28 +21,16 @@ type Place {
   name: String!
 }
 
-input PlaceWhereUniqueInput {
-  code: String
-  id: Int
-}
-
 type Query {
-  activeCheckin(email: String!): [UsersOnPlaces!]!
-  places(after: PlaceWhereUniqueInput, before: PlaceWhereUniqueInput, first: Int, last: Int): [Place!]!
-  users(after: UserWhereUniqueInput, before: UserWhereUniqueInput, first: Int, last: Int): [User!]!
-  usersOnPlaces(after: UsersOnPlacesWhereUniqueInput, before: UsersOnPlacesWhereUniqueInput, first: Int, last: Int): [UsersOnPlaces!]!
+  activeCheckin(email: String!): [Session!]!
+  places(skip: Int): [Place!]!
+  sessions(skip: Int): [Session!]!
+  users(skip: Int): [User!]!
 }
 
-type User {
-  email: String!
-  id: Int!
-  name: String!
-  phone: String!
-}
-
-type UsersOnPlaces {
-  checkinDate: Date
-  checkoutDate: Date
+type Session {
+  checkinDate: DateTime!
+  checkoutDate: DateTime!
   id: Int!
   place: Place!
   placeId: Int!
@@ -45,11 +38,9 @@ type UsersOnPlaces {
   userId: Int!
 }
 
-input UsersOnPlacesWhereUniqueInput {
-  id: Int
-}
-
-input UserWhereUniqueInput {
-  email: String
-  id: Int
+type User {
+  email: String!
+  id: Int!
+  name: String!
+  phone: String!
 }
