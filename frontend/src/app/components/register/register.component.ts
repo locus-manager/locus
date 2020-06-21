@@ -1,6 +1,6 @@
 import {Component, OnInit, ViewChild} from '@angular/core';
 import {AbstractControl, FormArray, FormBuilder, FormGroup, Validators} from '@angular/forms';
-import { TranslateService } from '@ngx-translate/core';
+import { TranslocoService } from '@ngneat/transloco';
 import { RegisterService } from '../../services/register.service';
 import { LocalStorageService } from '../../services/local-storage.service';
 import {
@@ -20,34 +20,16 @@ import { ActivatedRoute } from '@angular/router';
 export class RegisterComponent implements OnInit {
   @ViewChild(PoModalComponent, { static: true }) poModal: PoModalComponent;
 
-  public primaryAction: PoModalAction = {
-    label: this.translateService.instant('Submit'),
-    action: () => {
-      if (this.registerForm.valid) {
-        this.saveRegister(this.registerForm);
-        this.poModal.close();
-      }
-    }
-  };
-
-  public secondaryAction: PoModalAction = {
-    label: this.translateService.instant('Cancel'),
-    action: () => this.poModal.close()
-  };
-
+  public primaryAction: PoModalAction = null;
+  public secondaryAction: PoModalAction = null;
+  public options: PoRadioGroupOption[] = [];
   public registerForm: FormGroup;
-
-  //TODO: Verificar pq não está traduzindo
-  public options: PoRadioGroupOption[] = [
-    { label: this.translateService.instant('Check in'), value: 'checkin' },
-    { label: this.translateService.instant('Checkout'), value: 'checkout' }
-  ];
 
   constructor(
     private route: ActivatedRoute,
     private formBuilder: FormBuilder,
     private registerService: RegisterService,
-    private translateService: TranslateService,
+    private translateService: TranslocoService,
     private storageService: LocalStorageService,
     private poNotificationService: PoNotificationService,
   ) { }
@@ -63,6 +45,9 @@ export class RegisterComponent implements OnInit {
     });
 
     this.fetchForm();
+    setTimeout(() => {
+     this.initVariables();
+    }, 2);
   }
 
   public setName(event) {
@@ -84,7 +69,7 @@ export class RegisterComponent implements OnInit {
       this.markFormAsDirty(this.registerForm);
 
       return this.poNotificationService.warning({
-        message: this.translateService.instant('Verify the required fields'),
+        message: this.translateService.translate('Verify the required fields'),
         orientation: PoToasterOrientation.Top,
       });
     }
@@ -113,18 +98,18 @@ export class RegisterComponent implements OnInit {
     this.storageService.setInStorage(
       { name: value.name, email: value.email, phone: value.phone }
     );
-    this.registerService.register(value).subscribe(
+    this.registerService.createSession(value).subscribe(
       () => {
         this.registerForm.markAsPristine();
         return this.poNotificationService.success({
-          message: this.translateService.instant('Registration successful'),
+          message: this.translateService.translate('Registration successful'),
           orientation: PoToasterOrientation.Top,
         });
       },
       (error) => {
         console.error(error);
         return this.poNotificationService.error({
-          message: this.translateService.instant('Sorry! An unexpected error occurred, please try again!'),
+          message: this.translateService.translate('Sorry! An unexpected error occurred, please try again!'),
           orientation: PoToasterOrientation.Top,
         });
       }
@@ -155,5 +140,25 @@ export class RegisterComponent implements OnInit {
     } else if (control instanceof FormArray) {
       control.controls.forEach(element => this.markControlAsDirty(element));
     }
+  }
+
+  private initVariables() {
+    this.primaryAction = {
+      label: this.translateService.translate('Submit'),
+      action: () => {
+        if (this.registerForm.valid) {
+          this.saveRegister(this.registerForm);
+          this.poModal.close();
+        }
+      }
+    };
+    this.secondaryAction = {
+      label: this.translateService.translate('Cancel'),
+      action: () => this.poModal.close()
+    };
+    this.options = [
+      { label: this.translateService.translate('Check in'), value: 'checkin' },
+      { label: this.translateService.translate('Checkout'), value: 'checkout' }
+    ];
   }
 }
