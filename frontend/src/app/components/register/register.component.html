@@ -1,52 +1,65 @@
-<div [formGroup]="registerForm">
-  <div class="po-sm-12 po-p-2">
-    <h2 class="po-mb-2 po-mt-2 po-font-subtitle">
-      {{'Location record' | transloco}}
-    </h2>
+<div class="po-sm-12 po-md-6" [formGroup]="registerForm">
+  <div class="flex-container po-mt-2 po-mb-2">
+    <img src="../../../assets/images/logo_***REMOVED***.png" alt="***REMOVED*** - Locus" class="grey">
+  </div>
 
-    <po-email
-      name="email"
-      p-label="E-mail"
-      p-clean="true"
-      p-placeholder="{{'Enter your corporate email here' | transloco}}"
-      formControlName="email"
-      (p-change)="setName($event)"
-    ></po-email>
+  <h2>{{'Location record' | transloco}}</h2>
 
-    <po-input
-      name="name"
-      p-label="{{'Name' | transloco}}"
-      p-icon="po-icon-user"
-      p-clean="true"
-      p-placeholder="{{ 'Enter your name' | transloco }}"
-      formControlName="name"
-    ></po-input>
+  <div class="po-p-2">
+    <div>
+      <po-email
+        name="email"
+        p-label="E-mail"
+        p-clean="true"
+        p-auto-focus="true"
+        p-placeholder="{{'Enter your corporate email here' | transloco}}"
+        formControlName="email"
+        (p-change)="setName($event)"
+      ></po-email>
+    </div>
 
-    <po-input
-      name="phone"
-      p-label="{{'Phone' | transloco}}"
-      p-mask="(99) 99999?-9999"
-      [p-minlength]="11"
-      p-icon="po-icon-telephone"
-      p-mask-format-model="true"
-      p-clean="true"
-      p-placeholder="{{ 'Enter your phone' | transloco }}"
-      formControlName="phone"
-    ></po-input>
+    <div>
+      <po-input
+        name="name"
+        p-label="{{'Name' | transloco}}"
+        p-icon="po-icon-user"
+        p-clean="true"
+        p-placeholder="{{ 'Enter your name' | transloco }}"
+        formControlName="name"
+      ></po-input>
+    </div>
 
-    <po-radio-group
-      class="po-md-12"
-      name="type"
-      formControlName="type"
-      [p-options]="options"
-    ></po-radio-group>
+    <div>
+      <po-input
+        name="phone"
+        p-label="{{'Phone' | transloco}}"
+        p-mask="(99) 99999?-9999"
+        [p-minlength]="11"
+        p-icon="po-icon-telephone"
+        p-mask-format-model="true"
+        p-clean="true"
+        p-placeholder="{{ 'Enter your phone' | transloco }}"
+        formControlName="phone"
+      ></po-input>
+    </div>
 
-    <po-button
-      p-label="{{'Submit' | transloco}}"
-      p-type="primary"
-      p-icon="po-icon po-icon-pin"
-      (p-click)="submit(registerForm)"
-    ></po-button>
+    <div>
+      <po-radio-group
+        name="type"
+        formControlName="type"
+        [p-options]="options"
+      ></po-radio-group>
+    </div>
+
+    <div class="flex-container">
+      <po-button
+        class="po-sm-12 po-md-6"
+        p-label="{{'Submit' | transloco}}"
+        p-type="primary"
+        p-icon="po-icon po-icon-pin"
+        (p-click)="submit(registerForm)"
+      ></po-button>
+    </div>
   </div>
 
   <po-modal
