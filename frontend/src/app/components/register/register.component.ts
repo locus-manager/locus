@@ -144,7 +144,7 @@ export class RegisterComponent implements OnInit {
 
   private initVariables() {
     this.primaryAction = {
-      label: this.translateService.translate('Submit'),
+      label: this.translateService.translate('Enviar'),
       action: () => {
         if (this.registerForm.valid) {
           this.saveRegister(this.registerForm);
@@ -153,12 +153,12 @@ export class RegisterComponent implements OnInit {
       }
     };
     this.secondaryAction = {
-      label: this.translateService.translate('Cancel'),
+      label: this.translateService.translate('Cancelar'),
       action: () => this.poModal.close()
     };
     this.options = [
-      { label: this.translateService.translate('Check in'), value: 'checkin' },
-      { label: this.translateService.translate('Checkout'), value: 'checkout' }
+      { label: this.translateService.translate('Entrada'), value: 'checkin' },
+      { label: this.translateService.translate('Saída'), value: 'checkout' }
     ];
   }
 }
