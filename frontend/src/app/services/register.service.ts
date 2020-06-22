@@ -40,7 +40,7 @@ export class RegisterService {
             phone: $phone
             type: $type
             code: $code
-            checkIn: $checkin
+            checkin: $checkin
         ) { id }
       }
     `;
