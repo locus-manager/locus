@@ -25,6 +25,7 @@ export class RegisterComponent implements OnInit {
   public secondaryAction: PoModalAction = null;
   public options: PoRadioGroupOption[] = [];
   public registerForm: FormGroup;
+  public loading = false;
 
   constructor(
     private route: ActivatedRoute,
@@ -46,9 +47,7 @@ export class RegisterComponent implements OnInit {
     });
 
     this.fetchForm();
-    setTimeout(() => {
-     this.initVariables();
-    }, 3);
+    this.initVariables();
   }
 
   public setName(event) {
@@ -74,6 +73,8 @@ export class RegisterComponent implements OnInit {
         orientation: PoToasterOrientation.Top,
       });
     }
+
+    this.loading = true;
 
     if (value.type === 'checkout') {
       this.verifyActiveCheckIn(value);
@@ -103,9 +104,11 @@ export class RegisterComponent implements OnInit {
       () => {
         this.registerForm.markAsPristine();
         this.modalSuccess.open();
+        this.loading = false;
       },
       (error) => {
         console.error(error);
+        this.loading = false;
         return this.poNotificationService.error({
           message: this.translateService.translate('Sorry! An unexpected error occurred, please try again!'),
           orientation: PoToasterOrientation.Top,
@@ -142,7 +145,7 @@ export class RegisterComponent implements OnInit {
 
   private initVariables() {
     this.primaryAction = {
-      label: this.translateService.translate('Submit'),
+      label: 'Enviar',
       action: () => {
         if (this.registerForm.valid) {
           this.saveRegister(this.registerForm);
@@ -151,12 +154,12 @@ export class RegisterComponent implements OnInit {
       }
     };
     this.secondaryAction = {
-      label: this.translateService.translate('Cancel'),
+      label: 'Cancelar',
       action: () => this.modalCheckin.close()
     };
     this.options = [
-      { label: this.translateService.translate('Check in'), value: 'checkin' },
-      { label: this.translateService.translate('Checkout'), value: 'checkout' }
+      { label: 'Entrada', value: 'checkin' },
+      { label: 'Saída', value: 'checkout' }
     ];
   }
 }

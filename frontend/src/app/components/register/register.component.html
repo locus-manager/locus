@@ -57,6 +57,7 @@
         p-label="{{'Submit' | transloco}}"
         p-type="primary"
         p-icon="po-icon po-icon-pin"
+        [p-loading]="loading"
         (p-click)="submit(registerForm)"
       ></po-button>
     </div>
