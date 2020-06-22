@@ -1,5 +1,14 @@
-import { intArg, makeSchema, objectType, stringArg } from '@nexus/schema'
+import {
+  asNexusMethod,
+  intArg,
+  makeSchema,
+  objectType,
+  stringArg,
+} from '@nexus/schema'
 import { nexusPrismaPlugin } from 'nexus-prisma'
+import { GraphQLDateTime} from 'graphql-iso-date'
+
+export const GQLDateTime = asNexusMethod(GraphQLDateTime, 'datetime')
 
 const User = objectType({
   name: 'User',
@@ -20,16 +29,16 @@ const Place = objectType({
   },
 })
 
-const UsersOnPlaces = objectType({
-  name: 'UsersOnPlaces',
+const Session = objectType({
+  name: 'Session',
   definition(t) {
     t.model.id()
     t.model.placeId()
     t.model.userId()
     t.model.place()
     t.model.user()
-    t.model.checkoutDate({ type: 'Date' })
-    t.model.checkinDate({ type: 'Date' })
+    t.datetime('checkinDate')
+    t.datetime('checkoutDate')
   },
 })
 
@@ -38,17 +47,17 @@ const Query = objectType({
   definition(t) {
     t.crud.users({ alias: 'users' })
     t.crud.places({ alias: 'places' })
-    t.crud.usersOnPlaces({ alias: 'usersOnPlaces' })
+    t.crud.sessions({ alias: 'sessions' })
 
     t.list.field('activeCheckin', {
-      type: 'UsersOnPlaces',
+      type: 'Session',
       args: {
         email: stringArg({ nullable: false }),
       },
       resolve: async (_, { email }, ctx) => {
-        const users = await ctx.prisma.usersOnPlaces.findMany({
+        const users = await ctx.prisma.session.findMany({
           where: { user: { email }, checkoutDate: null },
-	  orderBy: { checkinDate: 'desc' },
+          orderBy: { checkinDate: 'desc' },
         })
 
         return users.length > 0 ? [users[0]] : []
@@ -78,89 +87,93 @@ const Mutation = objectType({
         name: stringArg({ nullable: false }),
         code: stringArg({ nullable: false }),
       },
-      resolve: (_, { name, code }, ctx) => {
+      resolve: (_, { name, code }, ctx): Promise<any> => {
         return ctx.prisma.place.create({ data: { name, code } })
       },
     })
 
-    t.field('createUserOnPlace', {
-      type: 'UsersOnPlaces',
+    t.field('createSession', {
+      type: 'Session',
       args: {
         name: stringArg({ nullable: false }),
         email: stringArg({ nullable: false }),
         phone: stringArg({ nullable: false }),
         type: stringArg({ nullable: false }),
         code: stringArg({ nullable: false }),
-	checkin: stringArg({ nullable: true }),
+        checkin: stringArg({ nullable: true }),
       },
-      resolve: async (_, { name, email, phone, type, code, checkin }, ctx) => {
+      resolve: async (
+        _,
+        { name, email, phone, type, code, checkin },
+        ctx,
+      ): Promise<any> => {
         const user = await ctx.prisma.user.upsert({
           where: { email },
           update: { name, phone },
           create: { name, email, phone },
         })
 
-	const currentDate = new Date()
+        const currentDate = new Date()
 
-	switch (type) {
-	  case 'checkin':
-	    // Must close the previous session setting current time
-	    await ctx.prisma.usersOnPlaces.updateMany({
-	      where: { user: { email }, checkoutDate: null },
-	      data: { checkoutDate: currentDate.toISOString() },
-	    })
+        switch (type) {
+          case 'checkin':
+            // Must close the previous session setting current time
+            await ctx.prisma.session.updateMany({
+              where: { user: { email }, checkoutDate: null },
+              data: { checkoutDate: currentDate.toISOString() },
+            })
 
-	    return await ctx.prisma.usersOnPlaces.create({
-	      data: {
-		user: { connect: { id: user.id } },
-		place: { connect: { code: code } },
-		checkinDate: currentDate.toISOString(),
-	      },
-	    })
-	  case 'checkout':
-	    const datesToBeUpdated: {
-	      checkinDate?: string
-	      checkoutDate?: string
-	    } = {}
+            return await ctx.prisma.session.create({
+              data: {
+                user: { connect: { id: user.id } },
+                place: { connect: { code: code } },
+                checkinDate: currentDate.toISOString(),
+              },
+            })
+          case 'checkout':
+            const datesToBeUpdated: {
+              checkinDate?: string
+              checkoutDate?: string
+            } = {}
 
-	    datesToBeUpdated.checkoutDate = currentDate.toISOString()
-	    if (checkin) {
-	      const [hour, minutes] = checkin.split(':')
-	      currentDate.setHours(Number(hour))
-	      currentDate.setMinutes(Number(minutes))
-	      datesToBeUpdated.checkinDate = currentDate.toISOString()
-	    }
+            datesToBeUpdated.checkoutDate = currentDate.toISOString()
+            if (checkin) {
+              const [hour, minutes] = checkin.split(':')
+              currentDate.setHours(Number(hour))
+              currentDate.setMinutes(Number(minutes))
+              datesToBeUpdated.checkinDate = currentDate.toISOString()
+            }
 
-	    const openSessions = await ctx.prisma.usersOnPlaces.findMany({
-	      where: { user: { email }, checkoutDate: null },
-	      orderBy: { checkinDate: 'desc' },
-	    })
+            const openSessions = await ctx.prisma.session.findMany({
+              where: { user: { email }, checkoutDate: null },
+              orderBy: { checkinDate: 'desc' },
+            })
 
-	    const currentSession =
-	      openSessions.length > 0 ? openSessions[0] : { id: 0 }
+            const currentSession =
+              openSessions.length > 0 ? openSessions[0] : { id: 0 }
 
-	    return await ctx.prisma.usersOnPlaces.upsert({
-	      where: { id: currentSession.id },
-	      create: {
-		user: { connect: { id: user.id } },
-		place: { connect: { code: code } },
-		...datesToBeUpdated,
-	      },
-	      update: {
-		...datesToBeUpdated,
-	      },
-	    })
-	}
+            return await ctx.prisma.session.upsert({
+              where: { id: currentSession.id },
+              create: {
+                user: { connect: { id: user.id } },
+                place: { connect: { code: code } },
+                ...datesToBeUpdated,
+              },
+              update: {
+                ...datesToBeUpdated,
+              },
+            })
+        }
       },
     })
   },
 })
 
 export const schema = makeSchema({
-  types: [Query, Mutation, User, Place, UsersOnPlaces],
+  types: [Query, Mutation, GQLDateTime, User, Place, Session],
   plugins: [
     nexusPrismaPlugin({
-      experimentalCRUD: true,
+      experimentalCRUD: true
     }),
   ],
   outputs: {

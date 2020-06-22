@@ -4,7 +4,7 @@ generator client {
 
 datasource db {
   provider = "postgresql"
-  url      = "postgres://rnebvgxwggkhfq:8da86f0e581cfa097b42b20ede418cbb74d3af1fb9d4767adbdda6e6ce4db514@ec2-52-72-221-20.compute-1.amazonaws.com:5432/d2fg75cd5lj2u1"
+  url = "***"
 }
 
 model User {
@@ -25,9 +25,9 @@ model Place {
 model Session {
   id            Int       @default(autoincrement()) @id
   user          User      @relation(fields: [userId], references: [id])
-  userId        Int       // relation scalar field (used in the `@relation` attribute above)
+  userId        Int // relation scalar field (used in the `@relation` attribute above)
   place         Place     @relation(fields: [placeId], references: [id])
-  placeId       Int       // relation scalar field (used in the `@relation` attribute above)
+  placeId       Int // relation scalar field (used in the `@relation` attribute above)
   checkinDate   DateTime? @default(now())
   checkoutDate  DateTime?
 }
