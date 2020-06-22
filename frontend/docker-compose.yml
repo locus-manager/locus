@@ -1,0 +1,14 @@
+version: "3.7"
+services:
+  locus-frontend:
+    build:
+      dockerfile: Dockerfile
+      context: .
+    networks:
+      - locus-frontend-network
+    ports:
+      - "80:80"
+
+networks:
+  locus-frontend-network:
+    driver: bridge
