@@ -11,15 +11,20 @@
     width: 50%;
   }
 
-  .po-modal-footer {
+  .modal-success .po-modal-footer {
     display: none;
   }
+}
+
+.form {
+  background: #fff;
+  border-radius: 10px;
 }
 
 h2 {
   margin: 2em 0 1em;
   font-family: NunitoSans-Bold,sans-serif;
-  color: #009bbe;
+  color: #fff;
   font-size: 20px;
   line-height: 24px;
   text-align: center;
