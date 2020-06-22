@@ -63,6 +63,7 @@
   </div>
 
   <po-modal
+    #checkin
     p-size="md"
     p-title="{{'There is no check-in' | transloco}}"
     [p-primary-action]="primaryAction"
@@ -76,5 +77,19 @@
       formControlName="checkin"
       p-mask-format-model="true"
     ></po-input>
+  </po-modal>
+
+  <po-modal #success p-hide-close p-size="sm">
+    <div class="success-check">
+      <div class="check-icon">
+        <span class="icon-line line-tip"></span>
+        <span class="icon-line line-long"></span>
+        <div class="icon-circle"></div>
+        <div class="icon-fix"></div>
+      </div>
+    </div>
+    <h3 class="po-mb-1 po-text-center po-font-text-large-bold">
+      {{ 'Registration successful' | transloco }}
+    </h3>
   </po-modal>
 </div>

@@ -18,7 +18,8 @@ import { ActivatedRoute } from '@angular/router';
   styleUrls: ['./register.component.scss']
 })
 export class RegisterComponent implements OnInit {
-  @ViewChild(PoModalComponent, { static: true }) poModal: PoModalComponent;
+  @ViewChild('checkin', { static: true }) modalCheckin: PoModalComponent;
+  @ViewChild('success', { static: true }) modalSuccess: PoModalComponent;
 
   public primaryAction: PoModalAction = null;
   public secondaryAction: PoModalAction = null;
@@ -101,10 +102,7 @@ export class RegisterComponent implements OnInit {
     this.registerService.createSession(value).subscribe(
       () => {
         this.registerForm.markAsPristine();
-        return this.poNotificationService.success({
-          message: this.translateService.translate('Registration successful'),
-          orientation: PoToasterOrientation.Top,
-        });
+        this.modalSuccess.open();
       },
       (error) => {
         console.error(error);
@@ -119,7 +117,7 @@ export class RegisterComponent implements OnInit {
   private verifyActiveCheckIn(value) {
     this.registerService.verifyActiveCheckin(value.email).subscribe((data: any[]) => {
       if (data.length === 0) {
-        this.poModal.open();
+        this.modalCheckin.open();
       } else {
         this.saveRegister(this.registerForm);
       }
@@ -148,13 +146,13 @@ export class RegisterComponent implements OnInit {
       action: () => {
         if (this.registerForm.valid) {
           this.saveRegister(this.registerForm);
-          this.poModal.close();
+          this.modalCheckin.close();
         }
       }
     };
     this.secondaryAction = {
       label: this.translateService.translate('Cancel'),
-      action: () => this.poModal.close()
+      action: () => this.modalCheckin.close()
     };
     this.options = [
       { label: this.translateService.translate('Check in'), value: 'checkin' },
