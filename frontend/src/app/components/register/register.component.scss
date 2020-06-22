@@ -1,0 +1,38 @@
+:host {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: .5em;
+  width: 100%;
+}
+
+::ng-deep {
+  .po-radio-group-item {
+    width: 50%;
+  }
+}
+
+h2 {
+  margin: 2em 0 1em;
+  font-family: NunitoSans-Bold,sans-serif;
+  color: #009bbe;
+  font-size: 20px;
+  line-height: 24px;
+  text-align: center;
+  text-transform: uppercase;
+}
+
+.flex-container {
+  display: flex;
+  justify-content: center;
+  width: 100%;
+}
+
+po-button {
+  margin: 2em 0;
+}
+
+img {
+  width: 145px;
+}
+
