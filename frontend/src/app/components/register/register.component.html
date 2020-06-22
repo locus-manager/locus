@@ -1,11 +1,11 @@
 <div class="po-sm-12 po-md-6" [formGroup]="registerForm">
   <div class="flex-container po-mt-2 po-mb-2">
-    <img src="../../../assets/images/logo_totvs.png" alt="***REMOVED*** - Locus" class="grey">
+    <img src="../../../assets/images/logo-totvs.svg" alt="***REMOVED*** - Locus" class="grey">
   </div>
 
   <h2>{{'Location record' | transloco}}</h2>
 
-  <div class="po-p-2">
+  <div class="po-p-2 form">
     <div>
       <po-email
         name="email"
@@ -80,7 +80,7 @@
     ></po-input>
   </po-modal>
 
-  <po-modal #success p-hide-close p-size="sm">
+  <po-modal #success p-hide-close p-size="sm" class="modal-success">
     <div class="success-check">
       <div class="check-icon">
         <span class="icon-line line-tip"></span>
