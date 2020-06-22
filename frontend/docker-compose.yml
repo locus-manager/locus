@@ -1,6 +1,6 @@
 version: "3.7"
 services:
-  locus-backend:
+  locus-frontend:
     build:
       dockerfile: Dockerfile
       context: .
