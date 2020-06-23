@@ -1,7 +1,7 @@
 import {Component, OnInit, ViewChild} from '@angular/core';
 import {AbstractControl, FormArray, FormBuilder, FormGroup, Validators} from '@angular/forms';
 import { TranslocoService } from '@ngneat/transloco';
-import { RegisterService } from '../../services/register.service';
+import { SessionService } from '../../services/session.service';
 import { LocalStorageService } from '../../services/local-storage.service';
 import {
   PoModalAction,
@@ -11,6 +11,7 @@ import {
   PoToasterOrientation
 } from '@po-ui/ng-components';
 import { ActivatedRoute } from '@angular/router';
+import { Place } from '../../models/app.model';
 
 @Component({
   selector: 'app-register',
@@ -26,11 +27,12 @@ export class RegisterComponent implements OnInit {
   public options: PoRadioGroupOption[] = [];
   public registerForm: FormGroup;
   public loading = false;
+  public place: Place;
 
   constructor(
     private route: ActivatedRoute,
     private formBuilder: FormBuilder,
-    private registerService: RegisterService,
+    private sessionService: SessionService,
     private translateService: TranslocoService,
     private storageService: LocalStorageService,
     private poNotificationService: PoNotificationService,
@@ -46,6 +48,7 @@ export class RegisterComponent implements OnInit {
       checkin: ['']
     });
 
+    this.getPlace();
     this.fetchForm();
     this.initVariables();
   }
@@ -84,6 +87,13 @@ export class RegisterComponent implements OnInit {
     this.saveRegister(this.registerForm);
   }
 
+  private getPlace() {
+    const { code } = this.route.snapshot.queryParams;
+    this.sessionService.getPlace(code).subscribe(place => {
+      this.place = place[0];
+    });
+  }
+
   private fetchForm() {
     const { code } = this.route.snapshot.queryParams;
     const register = this.storageService.getInStorage();
@@ -100,7 +110,8 @@ export class RegisterComponent implements OnInit {
     this.storageService.setInStorage(
       { name: value.name, email: value.email, phone: value.phone }
     );
-    this.registerService.createSession(value).subscribe(
+
+    this.sessionService.createSession(value).subscribe(
       () => {
         this.registerForm.markAsPristine();
         this.modalSuccess.open();
@@ -118,7 +129,7 @@ export class RegisterComponent implements OnInit {
   }
 
   private verifyActiveCheckIn(value) {
-    this.registerService.verifyActiveCheckin(value.email).subscribe((data: any[]) => {
+    this.sessionService.verifyActiveCheckin(value.email).subscribe((data: any[]) => {
       if (data.length === 0) {
         this.modalCheckin.open();
       } else {
