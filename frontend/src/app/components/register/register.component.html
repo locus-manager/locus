@@ -80,7 +80,7 @@
     ></po-input>
   </po-modal>
 
-  <po-modal #success p-hide-close p-size="sm" class="modal-success">
+  <po-modal #success p-hide-close p-size="sm" class="modal-success" [p-primary-action]="action">
     <div class="success-check">
       <div class="check-icon">
         <span class="icon-line line-tip"></span>
@@ -89,8 +89,10 @@
         <div class="icon-fix"></div>
       </div>
     </div>
+
     <h3 class="po-mb-1 po-text-center po-font-text-large-bold">
-      {{ 'Registration successful' | transloco }}
+      {{ (registerForm.value.type === 'checkin'  ? ('Check in successfully' | transloco) :
+      'Checkout successfully' | transloco) }}
     </h3>
   </po-modal>
 </div>
