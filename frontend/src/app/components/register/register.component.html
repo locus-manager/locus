@@ -3,7 +3,13 @@
     <img src="../../../assets/images/logo-totvs.svg" alt="TOTVS - Locus" class="grey">
   </div>
 
-  <h2>{{'Location record' | transloco}}</h2>
+  <h2>
+    {{'Location record' | transloco}}
+  </h2>
+
+  <div *ngIf="place" class="information">
+    <span class="po-icon po-icon-pin"></span> {{ place.name }}
+  </div>
 
   <div class="po-p-2 form">
     <div>
