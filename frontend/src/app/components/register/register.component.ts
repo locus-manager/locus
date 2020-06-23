@@ -10,7 +10,7 @@ import {
   PoRadioGroupOption,
   PoToasterOrientation
 } from '@po-ui/ng-components';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { Place } from '../../models/app.model';
 
 @Component({
@@ -29,8 +29,17 @@ export class RegisterComponent implements OnInit {
   public loading = false;
   public place: Place;
 
+  //TODO: Verificar tradução
+  public action =  {
+    label: this.translateService.translate('Ler QR code'),
+    action: () => {
+      this.router.navigate(['/']);
+    }
+  };
+
   constructor(
     private route: ActivatedRoute,
+    private router: Router,
     private formBuilder: FormBuilder,
     private sessionService: SessionService,
     private translateService: TranslocoService,
@@ -45,7 +54,7 @@ export class RegisterComponent implements OnInit {
       phone: ['', Validators.required],
       type: ['', Validators.required],
       code: [''],
-      checkin: ['']
+      checkin: [''],
     });
 
     this.getPlace();
@@ -154,6 +163,7 @@ export class RegisterComponent implements OnInit {
     }
   }
 
+  //TODO: Verificar tradução
   private initVariables() {
     this.primaryAction = {
       label: 'Enviar',
