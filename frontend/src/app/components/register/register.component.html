@@ -73,8 +73,8 @@
     #checkin
     p-size="md"
     p-title="{{'There is no check-in' | transloco}}"
-    [p-primary-action]="primaryAction"
-    [p-secondary-action]="secondaryAction"
+    [p-primary-action]="saveCheckin"
+    [p-secondary-action]="closeModalCheckin"
   >
     <po-input
       name="checkin"
@@ -91,7 +91,8 @@
     p-hide-close
     p-size="sm"
     class="modal-success"
-    [p-primary-action]="action"
+    [p-primary-action]="redirect"
+    [p-secondary-action]="closeModalSuccess"
   >
     <div class="success-check">
       <div class="check-icon">

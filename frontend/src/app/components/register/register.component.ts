@@ -22,20 +22,14 @@ export class RegisterComponent implements OnInit {
   @ViewChild('checkin', { static: true }) modalCheckin: PoModalComponent;
   @ViewChild('success', { static: true }) modalSuccess: PoModalComponent;
 
-  public primaryAction: PoModalAction = null;
-  public secondaryAction: PoModalAction = null;
+  public saveCheckin: PoModalAction = null;
+  public closeModalCheckin: PoModalAction = null;
+  public redirect: PoModalAction = null;
+  public closeModalSuccess: PoModalAction = null;
   public options: PoRadioGroupOption[] = [];
   public registerForm: FormGroup;
   public loading = false;
   public place: Place;
-
-  //TODO: Verificar tradução
-  public action =  {
-    label: this.translateService.translate('Ler QR code'),
-    action: () => {
-      this.router.navigate(['/']);
-    }
-  };
 
   constructor(
     private route: ActivatedRoute,
@@ -163,10 +157,10 @@ export class RegisterComponent implements OnInit {
     }
   }
 
-  //TODO: Verificar tradução
+  // TODO: Verificar tradução
   private initVariables() {
-    this.primaryAction = {
-      label: 'Enviar',
+    this.saveCheckin = {
+      label: this.translateService.translate('Enviar'),
       action: () => {
         if (this.registerForm.valid) {
           this.saveRegister(this.registerForm);
@@ -174,13 +168,24 @@ export class RegisterComponent implements OnInit {
         }
       }
     };
-    this.secondaryAction = {
-      label: 'Cancelar',
+    this.closeModalCheckin = {
+      label: this.translateService.translate('Cancelar'),
       action: () => this.modalCheckin.close()
     };
+
+    this.redirect = {
+      label: this.translateService.translate('Ler QR code'),
+      action: () => this.router.navigate(['/'])
+    };
+
+    this.closeModalSuccess = {
+      label: this.translateService.translate('Cancelar'),
+      action: () => this.modalSuccess.close()
+    };
+
     this.options = [
-      { label: 'Entrada', value: 'checkin' },
-      { label: 'Saída', value: 'checkout' }
+      { label: this.translateService.translate('Entrada'), value: 'checkin' },
+      { label: this.translateService.translate('Saída'), value: 'checkout' }
     ];
   }
 }
