@@ -75,7 +75,7 @@ export class RegisterComponent implements OnInit {
       this.markFormAsDirty(this.registerForm);
 
       return this.poNotificationService.warning({
-        message: this.translateService.translate('Verify the required fields'),
+        message: 'Verique os campos obrigatórios',
         orientation: PoToasterOrientation.Top,
       });
     }
@@ -124,7 +124,7 @@ export class RegisterComponent implements OnInit {
         console.error(error);
         this.loading = false;
         return this.poNotificationService.error({
-          message: this.translateService.translate('Sorry! An unexpected error occurred, please try again!'),
+          message: 'Desculpe! Ocorreu um erro não esperado, por favor tente novamente!',
           orientation: PoToasterOrientation.Top,
         });
       }
@@ -160,7 +160,7 @@ export class RegisterComponent implements OnInit {
   // TODO: Verificar tradução
   private initVariables() {
     this.saveCheckin = {
-      label: this.translateService.translate('Enviar'),
+      label: 'Enviar',
       action: () => {
         if (this.registerForm.valid) {
           this.saveRegister(this.registerForm);
@@ -169,23 +169,23 @@ export class RegisterComponent implements OnInit {
       }
     };
     this.closeModalCheckin = {
-      label: this.translateService.translate('Cancelar'),
+      label: 'Cancelar',
       action: () => this.modalCheckin.close()
     };
 
     this.redirect = {
-      label: this.translateService.translate('Ler QR code'),
+      label: 'Ler QR code',
       action: () => this.router.navigate(['/'])
     };
 
     this.closeModalSuccess = {
-      label: this.translateService.translate('Cancelar'),
+      label: 'Cancelar',
       action: () => this.modalSuccess.close()
     };
 
     this.options = [
-      { label: this.translateService.translate('Entrada'), value: 'checkin' },
-      { label: this.translateService.translate('Saída'), value: 'checkout' }
+      { label: 'Entrada', value: 'checkin' },
+      { label: 'Saída', value: 'checkout' }
     ];
   }
 }
