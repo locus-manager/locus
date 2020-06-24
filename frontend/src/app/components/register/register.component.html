@@ -1,11 +1,9 @@
 <div class="po-sm-12 po-md-6" [formGroup]="registerForm">
   <div class="flex-container po-mt-2 po-mb-2">
-    <img src="../../../assets/images/logo-totvs.svg" alt="***REMOVED*** - Locus" class="grey">
+    <img src="../../../assets/images/logo-totvs.svg" alt="***REMOVED*** - Locus">
   </div>
 
-  <h2>
-    {{'Registro de Localização'}}
-  </h2>
+  <h2>Registro de Localização</h2>
 
   <div *ngIf="place" class="information">
     <span class="po-icon po-icon-pin"></span> {{ place.name }}
@@ -18,7 +16,7 @@
         p-label="E-mail"
         p-clean="true"
         p-auto-focus="true"
-        p-placeholder="{{ 'Insira seu e-mail corporativo' }}"
+        p-placeholder="Insira seu e-mail corporativo"
         formControlName="email"
         (p-change)="setName($event)"
       ></po-email>
@@ -27,10 +25,10 @@
     <div>
       <po-input
         name="name"
-        p-label="{{ 'Nome' }}"
+        p-label="Nome"
         p-icon="po-icon-user"
         p-clean="true"
-        p-placeholder="{{ 'Insira seu nome' }}"
+        p-placeholder="Insira seu nome"
         formControlName="name"
       ></po-input>
     </div>
@@ -38,13 +36,13 @@
     <div>
       <po-input
         name="phone"
-        p-label="{{'Telefone'}}"
+        p-label="Telefone"
         p-mask="(99) 99999?-9999"
         [p-minlength]="11"
         p-icon="po-icon-telephone"
         p-mask-format-model="true"
         p-clean="true"
-        p-placeholder="{{ 'Insira seu telefone' }}"
+        p-placeholder="Insira seu telefone"
         formControlName="phone"
       ></po-input>
     </div>
@@ -60,7 +58,7 @@
     <div class="flex-container">
       <po-button
         class="po-sm-12 po-md-6"
-        p-label="{{ 'Enviar' }}"
+        p-label="Enviar"
         p-type="primary"
         p-icon="po-icon po-icon-pin"
         [p-loading]="loading"
@@ -72,7 +70,8 @@
   <po-modal
     #checkin
     p-size="md"
-    p-title="{{ 'Não há entrada' }}"
+    p-hide-close
+    p-title="Não há entrada"
     [p-primary-action]="saveCheckin"
     [p-secondary-action]="closeModalCheckin"
   >
@@ -80,7 +79,7 @@
       name="checkin"
       p-mask="hh:mm"
       p-pattern="^(2[0-3]|[01]?[0-9]):([0-5]?[0-9])$"
-      p-label="{{ 'Qual o horário aproximado da entrada?' }}"
+      p-label="Qual o horário aproximado da entrada?"
       formControlName="checkin"
       p-mask-format-model="true"
     ></po-input>
@@ -90,7 +89,6 @@
     #success
     p-hide-close
     p-size="sm"
-    class="modal-success"
     [p-primary-action]="redirect"
     [p-secondary-action]="closeModalSuccess"
   >
@@ -104,8 +102,22 @@
     </div>
 
     <h3 class="po-mb-1 po-text-center po-font-text-large-bold">
-      {{ (registerForm.value.type === 'checkin'  ? 'Entrada na área '+ place?.name +' realizada com sucesso!' :
-      'Saída na área '+ place?.name +' realizada com sucesso!') }}
+      {{ (registerForm.value.type === 'checkin')
+        ? 'Entrada na área "'+ place?.name +'" realizada com sucesso!'
+        : 'Saída da área "'+ place?.name +'" realizada com sucesso!'
+      }}
     </h3>
   </po-modal>
 </div>
+
+<po-modal
+  #error
+  p-hide-close
+  p-size="sm"
+  [p-primary-action]="redirect"
+>
+  <div class="po-text-center error"><span class="po-icon po-icon-exclamation"></span></div>
+  <h3 class="po-mb-1 po-text-center po-font-text-large-bold">
+    Localização não encontrada, por favor leia novamente o QR Code!
+  </h3>
+</po-modal>
