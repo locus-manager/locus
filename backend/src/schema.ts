@@ -71,7 +71,7 @@ const Query = objectType({
       },
       resolve: async (_, { code }, ctx): Promise<any> => {
         return [await ctx.prisma.place.findOne({
-          where: { code: code },
+          where: { id: code },
         })]
       },
     })
