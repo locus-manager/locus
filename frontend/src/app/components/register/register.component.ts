@@ -21,6 +21,7 @@ import { Place } from '../../models/app.model';
 export class RegisterComponent implements OnInit {
   @ViewChild('checkin', { static: true }) modalCheckin: PoModalComponent;
   @ViewChild('success', { static: true }) modalSuccess: PoModalComponent;
+  @ViewChild('error', { static: true }) modalError: PoModalComponent;
 
   public saveCheckin: PoModalAction = null;
   public closeModalCheckin: PoModalAction = null;
@@ -71,11 +72,16 @@ export class RegisterComponent implements OnInit {
   }
 
   public submit({value, valid}: {value: any, valid: boolean}) {
+    if (!this.place) {
+      this.modalError.open();
+      return;
+    }
+
     if (!valid) {
       this.markFormAsDirty(this.registerForm);
 
       return this.poNotificationService.warning({
-        message: 'Verique os campos obrigatórios',
+        message: 'Verifique os campos obrigatórios',
         orientation: PoToasterOrientation.Top,
       });
     }
@@ -92,9 +98,13 @@ export class RegisterComponent implements OnInit {
 
   private getPlace() {
     const { code } = this.route.snapshot.queryParams;
-    this.sessionService.getPlace(code).subscribe(place => {
-      this.place = place[0];
-    });
+    this.sessionService.getPlace(code).subscribe(
+      place => { this.place = place[0]; },
+      error => {
+        this.modalError.open();
+        console.error(error);
+      }
+    );
   }
 
   private fetchForm() {
@@ -106,6 +116,16 @@ export class RegisterComponent implements OnInit {
 
     if (code) {
       this.registerForm.patchValue({ code });
+    }
+
+    if (register.email) {
+      this.sessionService.verifyActiveCheckin(register.email).subscribe((session: any[]) => {
+        if (session.length === 0) {
+          this.registerForm.patchValue({ type: 'checkin' });
+        } else {
+          this.registerForm.patchValue({ type: 'checkout' });
+        }
+      });
     }
   }
 
@@ -132,8 +152,8 @@ export class RegisterComponent implements OnInit {
   }
 
   private verifyActiveCheckIn(value) {
-    this.sessionService.verifyActiveCheckin(value.email).subscribe((data: any[]) => {
-      if (data.length === 0) {
+    this.sessionService.verifyActiveCheckin(value.email).subscribe((session: any[]) => {
+      if (session.length === 0) {
         this.modalCheckin.open();
       } else {
         this.saveRegister(this.registerForm);
@@ -170,17 +190,29 @@ export class RegisterComponent implements OnInit {
     };
     this.closeModalCheckin = {
       label: 'Cancelar',
-      action: () => this.modalCheckin.close()
+      action: () => {
+        this.loading = false;
+        this.modalCheckin.close();
+      }
     };
 
     this.redirect = {
-      label: 'Ler QR code',
-      action: () => this.router.navigate(['/'])
+      label: 'Nova Leitura',
+      action: () => {
+        if (!this.modalSuccess.isHidden) {
+          this.modalSuccess.close();
+        } else if (!this.modalError.isHidden) {
+          this.modalError.close();
+        }
+        this.router.navigate(['/']);
+      }
     };
 
     this.closeModalSuccess = {
-      label: 'Cancelar',
-      action: () => this.modalSuccess.close()
+      label: 'Sair',
+      action: () => {
+        window.location.href = 'https://produtos.totvs.com/produto/totvs-hospitalidade/pdv/';
+      }
     };
 
     this.options = [
