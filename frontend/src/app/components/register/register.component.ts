@@ -1,7 +1,7 @@
 import {Component, OnInit, ViewChild} from '@angular/core';
 import {AbstractControl, FormArray, FormBuilder, FormGroup, Validators} from '@angular/forms';
 import { TranslocoService } from '@ngneat/transloco';
-import { RegisterService } from '../../services/register.service';
+import { SessionService } from '../../services/session.service';
 import { LocalStorageService } from '../../services/local-storage.service';
 import {
   PoModalAction,
@@ -10,7 +10,8 @@ import {
   PoRadioGroupOption,
   PoToasterOrientation
 } from '@po-ui/ng-components';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
+import { Place } from '../../models/app.model';
 
 @Component({
   selector: 'app-register',
@@ -20,17 +21,22 @@ import { ActivatedRoute } from '@angular/router';
 export class RegisterComponent implements OnInit {
   @ViewChild('checkin', { static: true }) modalCheckin: PoModalComponent;
   @ViewChild('success', { static: true }) modalSuccess: PoModalComponent;
+  @ViewChild('error', { static: true }) modalError: PoModalComponent;
 
-  public primaryAction: PoModalAction = null;
-  public secondaryAction: PoModalAction = null;
+  public saveCheckin: PoModalAction = null;
+  public closeModalCheckin: PoModalAction = null;
+  public redirect: PoModalAction = null;
+  public closeModalSuccess: PoModalAction = null;
   public options: PoRadioGroupOption[] = [];
   public registerForm: FormGroup;
   public loading = false;
+  public place: Place;
 
   constructor(
     private route: ActivatedRoute,
+    private router: Router,
     private formBuilder: FormBuilder,
-    private registerService: RegisterService,
+    private sessionService: SessionService,
     private translateService: TranslocoService,
     private storageService: LocalStorageService,
     private poNotificationService: PoNotificationService,
@@ -43,9 +49,10 @@ export class RegisterComponent implements OnInit {
       phone: ['', Validators.required],
       type: ['', Validators.required],
       code: [''],
-      checkin: ['']
+      checkin: [''],
     });
 
+    this.getPlace();
     this.fetchForm();
     this.initVariables();
   }
@@ -65,11 +72,16 @@ export class RegisterComponent implements OnInit {
   }
 
   public submit({value, valid}: {value: any, valid: boolean}) {
+    if (!this.place) {
+      this.modalError.open();
+      return;
+    }
+
     if (!valid) {
       this.markFormAsDirty(this.registerForm);
 
       return this.poNotificationService.warning({
-        message: this.translateService.translate('Verify the required fields'),
+        message: 'Verifique os campos obrigatórios',
         orientation: PoToasterOrientation.Top,
       });
     }
@@ -84,6 +96,17 @@ export class RegisterComponent implements OnInit {
     this.saveRegister(this.registerForm);
   }
 
+  private getPlace() {
+    const { code } = this.route.snapshot.queryParams;
+    this.sessionService.getPlace(code).subscribe(
+      place => { this.place = place[0]; },
+      error => {
+        this.modalError.open();
+        console.error(error);
+      }
+    );
+  }
+
   private fetchForm() {
     const { code } = this.route.snapshot.queryParams;
     const register = this.storageService.getInStorage();
@@ -94,13 +117,24 @@ export class RegisterComponent implements OnInit {
     if (code) {
       this.registerForm.patchValue({ code });
     }
+
+    if (register.email) {
+      this.sessionService.verifyActiveCheckin(register.email).subscribe((session: any[]) => {
+        if (session.length === 0) {
+          this.registerForm.patchValue({ type: 'checkin' });
+        } else {
+          this.registerForm.patchValue({ type: 'checkout' });
+        }
+      });
+    }
   }
 
   private saveRegister({value}: {value: any}) {
     this.storageService.setInStorage(
       { name: value.name, email: value.email, phone: value.phone }
     );
-    this.registerService.createSession(value).subscribe(
+
+    this.sessionService.createSession(value).subscribe(
       () => {
         this.registerForm.markAsPristine();
         this.modalSuccess.open();
@@ -110,7 +144,7 @@ export class RegisterComponent implements OnInit {
         console.error(error);
         this.loading = false;
         return this.poNotificationService.error({
-          message: this.translateService.translate('Sorry! An unexpected error occurred, please try again!'),
+          message: 'Desculpe! Ocorreu um erro não esperado, por favor tente novamente!',
           orientation: PoToasterOrientation.Top,
         });
       }
@@ -118,8 +152,8 @@ export class RegisterComponent implements OnInit {
   }
 
   private verifyActiveCheckIn(value) {
-    this.registerService.verifyActiveCheckin(value.email).subscribe((data: any[]) => {
-      if (data.length === 0) {
+    this.sessionService.verifyActiveCheckin(value.email).subscribe((session: any[]) => {
+      if (session.length === 0) {
         this.modalCheckin.open();
       } else {
         this.saveRegister(this.registerForm);
@@ -143,8 +177,9 @@ export class RegisterComponent implements OnInit {
     }
   }
 
+  // TODO: Verificar tradução
   private initVariables() {
-    this.primaryAction = {
+    this.saveCheckin = {
       label: 'Enviar',
       action: () => {
         if (this.registerForm.valid) {
@@ -153,10 +188,33 @@ export class RegisterComponent implements OnInit {
         }
       }
     };
-    this.secondaryAction = {
+    this.closeModalCheckin = {
       label: 'Cancelar',
-      action: () => this.modalCheckin.close()
+      action: () => {
+        this.loading = false;
+        this.modalCheckin.close();
+      }
     };
+
+    this.redirect = {
+      label: 'Nova Leitura',
+      action: () => {
+        if (!this.modalSuccess.isHidden) {
+          this.modalSuccess.close();
+        } else if (!this.modalError.isHidden) {
+          this.modalError.close();
+        }
+        this.router.navigate(['/']);
+      }
+    };
+
+    this.closeModalSuccess = {
+      label: 'Sair',
+      action: () => {
+        window.location.href = 'https://produtos.totvs.com/produto/totvs-hospitalidade/pdv/';
+      }
+    };
+
     this.options = [
       { label: 'Entrada', value: 'checkin' },
       { label: 'Saída', value: 'checkout' }

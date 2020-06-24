@@ -11,8 +11,16 @@
     width: 50%;
   }
 
-  .modal-success .po-modal-footer {
-    display: none;
+  .po-field-container-content {
+    padding: 0;
+  }
+
+  .po-field-container-title {
+    margin-top: 8px;
+  }
+
+  .po-input {
+    box-shadow: none
   }
 }
 
@@ -22,10 +30,20 @@
 }
 
 h2 {
-  margin: 2em 0 1em;
+  margin: 1.5em 0;
   font-family: NunitoSans-Bold,sans-serif;
   color: #fff;
-  font-size: 20px;
+  font-size: 18px;
+  line-height: 24px;
+  text-align: center;
+  text-transform: uppercase;
+}
+
+.information {
+  margin: .5em 0 1em 0;
+  font-family: NunitoSans-Bold, sans-serif;
+  color: #fda71c;
+  font-size: 25px;
   line-height: 24px;
   text-align: center;
   text-transform: uppercase;
@@ -38,11 +56,17 @@ h2 {
 }
 
 po-button {
-  margin: 2em 0;
+  margin-top: 2em;
 }
 
 img {
-  width: 145px;
+  width: 125px;
+}
+
+po-modal .error {
+  font-size: 40px;
+  color: red;
+  margin-bottom: .5em;
 }
 
 .success-check {
