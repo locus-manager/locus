@@ -63,6 +63,18 @@ const Query = objectType({
         return users.length > 0 ? [users[0]] : []
       },
     })
+
+    t.list.field('getPlace', {
+      type: 'Place',
+      args: {
+        code: stringArg({ nullable: false }),
+      },
+      resolve: async (_, { code }, ctx): Promise<any> => {
+        return [await ctx.prisma.place.findOne({
+          where: { code: code },
+        })]
+      },
+    })
   },
 })
 

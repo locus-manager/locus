@@ -27,6 +27,7 @@ input PlaceWhereUniqueInput {
 
 type Query {
   activeCheckin(email: String!): [Session!]!
+  getPlace(code: String!): [Place!]!
   places(after: PlaceWhereUniqueInput, before: PlaceWhereUniqueInput, first: Int, last: Int): [Place!]!
   sessions(after: SessionWhereUniqueInput, before: SessionWhereUniqueInput, first: Int, last: Int): [Session!]!
   users(after: UserWhereUniqueInput, before: UserWhereUniqueInput, first: Int, last: Int): [User!]!
