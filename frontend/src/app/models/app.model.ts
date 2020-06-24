@@ -4,7 +4,13 @@ export interface User {
   phone: string;
 }
 
-export interface Register {
+export interface Place {
+  id: string;
+  code: string;
+  name: string;
+}
+
+export interface Session {
   name: string;
   email: string;
   phone: string;
