@@ -4,7 +4,7 @@ generator client {
 
 datasource db {
   provider = "postgresql"
-  url      = env("DATABASE_URL")
+  url = "***"
 }
 
 model User {
@@ -18,7 +18,7 @@ model User {
 model Place {
   id       String    @id @default(uuid())
   name     String
-  floor    String
+  code     String    @unique
   sessions Session[]
 }
 
@@ -28,6 +28,7 @@ model Session {
   userId       String // relation scalar field (used in the `@relation` attribute above)
   place        Place     @relation(fields: [placeId], references: [id])
   placeId      String // relation scalar field (used in the `@relation` attribute above)
+  floor        String
   checkinDate  DateTime? @default(now())
   checkoutDate DateTime?
 }

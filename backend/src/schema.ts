@@ -6,7 +6,7 @@ import {
   stringArg,
 } from '@nexus/schema'
 import { nexusPrismaPlugin } from 'nexus-prisma'
-import { GraphQLDateTime} from 'graphql-iso-date'
+import { GraphQLDateTime } from 'graphql-iso-date'
 
 export const GQLDateTime = asNexusMethod(GraphQLDateTime, 'datetime')
 
@@ -25,7 +25,7 @@ const Place = objectType({
   definition(t) {
     t.model.id()
     t.model.name()
-    t.model.code()
+    t.model.floor()
   },
 })
 
@@ -82,13 +82,13 @@ const Mutation = objectType({
     })
 
     t.field('createPlace', {
-      type: 'User',
+      type: 'Place',
       args: {
         name: stringArg({ nullable: false }),
-        code: stringArg({ nullable: false }),
+        floor: stringArg({ nullable: false }),
       },
-      resolve: (_, { name, code }, ctx): Promise<any> => {
-        return ctx.prisma.place.create({ data: { name, code } })
+      resolve: (_, { name, floor }, ctx): Promise<any> => {
+        return ctx.prisma.place.create({ data: { name, floor } })
       },
     })
 
@@ -126,7 +126,7 @@ const Mutation = objectType({
             return await ctx.prisma.session.create({
               data: {
                 user: { connect: { id: user.id } },
-                place: { connect: { code: code } },
+                place: { connect: { id: code } },
                 checkinDate: currentDate.toISOString(),
               },
             })
@@ -150,13 +150,13 @@ const Mutation = objectType({
             })
 
             const currentSession =
-              openSessions.length > 0 ? openSessions[0] : { id: 0 }
+              openSessions.length > 0 ? openSessions[0] : <any>{ id: undefined }
 
             return await ctx.prisma.session.upsert({
               where: { id: currentSession.id },
               create: {
                 user: { connect: { id: user.id } },
-                place: { connect: { code: code } },
+                place: { connect: { id: code } },
                 ...datesToBeUpdated,
               },
               update: {
@@ -173,7 +173,7 @@ export const schema = makeSchema({
   types: [Query, Mutation, GQLDateTime, User, Place, Session],
   plugins: [
     nexusPrismaPlugin({
-      experimentalCRUD: true
+      experimentalCRUD: true,
     }),
   ],
   outputs: {

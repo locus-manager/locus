@@ -1,4 +1,4 @@
 # Prisma Migrate lockfile v1
 
-20200620232250-init
-20200621033315-init
+20200624123844-init
+20200624125010-change-floor-column

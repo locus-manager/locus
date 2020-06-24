@@ -10,20 +10,19 @@ A date-time string at UTC, such as 2007-12-03T10:15:30Z, compliant with the
 scalar DateTime
 
 type Mutation {
-  createPlace(code: String!, name: String!): User!
+  createPlace(floor: String!, name: String!): Place!
   createSession(checkin: String, code: String!, email: String!, name: String!, phone: String!, type: String!): Session!
   createUser(email: String!, name: String!, phone: String!): User!
 }
 
 type Place {
-  code: String!
-  id: Int!
+  floor: String!
+  id: String!
   name: String!
 }
 
 input PlaceWhereUniqueInput {
-  code: String
-  id: Int
+  id: String
 }
 
 type Query {
@@ -36,25 +35,25 @@ type Query {
 type Session {
   checkinDate: DateTime!
   checkoutDate: DateTime!
-  id: Int!
+  id: String!
   place: Place!
-  placeId: Int!
+  placeId: String!
   user: User!
-  userId: Int!
+  userId: String!
 }
 
 input SessionWhereUniqueInput {
-  id: Int
+  id: String
 }
 
 type User {
   email: String!
-  id: Int!
+  id: String!
   name: String!
   phone: String!
 }
 
 input UserWhereUniqueInput {
   email: String
-  id: Int
+  id: String
 }
