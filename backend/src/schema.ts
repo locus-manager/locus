@@ -70,9 +70,11 @@ const Query = objectType({
         code: stringArg({ nullable: false }),
       },
       resolve: async (_, { code }, ctx): Promise<any> => {
-        return [await ctx.prisma.place.findOne({
-          where: { id: code },
-        })]
+        return [
+          await ctx.prisma.place.findOne({
+            where: { id: code },
+          }),
+        ]
       },
     })
   },
@@ -161,20 +163,20 @@ const Mutation = objectType({
               orderBy: { checkinDate: 'desc' },
             })
 
-            const currentSession =
-              openSessions.length > 0 ? openSessions[0] : <any>{ id: undefined }
-
-            return await ctx.prisma.session.upsert({
-              where: { id: currentSession.id },
-              create: {
-                user: { connect: { id: user.id } },
-                place: { connect: { id: code } },
-                ...datesToBeUpdated,
-              },
-              update: {
-                ...datesToBeUpdated,
-              },
-            })
+            return openSessions.length > 0
+              ? await ctx.prisma.session.update({
+                  where: { id: openSessions[0].id },
+                  data: {
+                    ...datesToBeUpdated,
+                  },
+                })
+              : await ctx.prisma.session.create({
+                  data: {
+                    user: { connect: { id: user.id } },
+                    place: { connect: { id: code } },
+                    ...datesToBeUpdated,
+                  },
+                })
         }
       },
     })
