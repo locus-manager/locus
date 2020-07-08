@@ -27,7 +27,7 @@ export class SessionService {
   getPlace(code: string) {
     const queryGetPlace = gql`
       query getPlace($code: String!) {
-        getPlace(code: $code) { id, code, name }
+        getPlace(code: $code) { id, name, floor }
       }
     `;
     return this.apollo.query({

@@ -52,9 +52,9 @@ export class RegisterComponent implements OnInit {
       checkin: [''],
     });
 
+    this.initVariables();
     this.getPlace();
     this.fetchForm();
-    this.initVariables();
   }
 
   public setName(event) {
@@ -112,20 +112,20 @@ export class RegisterComponent implements OnInit {
     const register = this.storageService.getInStorage();
     if (register !== null) {
       this.registerForm.patchValue(register);
+
+      if (register.email) {
+        this.sessionService.verifyActiveCheckin(register.email).subscribe((session: any[]) => {
+          if (session.length === 0) {
+            this.registerForm.patchValue({ type: 'checkin' });
+          } else {
+            this.registerForm.patchValue({ type: 'checkout' });
+          }
+        });
+      }
     }
 
     if (code) {
       this.registerForm.patchValue({ code });
-    }
-
-    if (register.email) {
-      this.sessionService.verifyActiveCheckin(register.email).subscribe((session: any[]) => {
-        if (session.length === 0) {
-          this.registerForm.patchValue({ type: 'checkin' });
-        } else {
-          this.registerForm.patchValue({ type: 'checkout' });
-        }
-      });
     }
   }
 
