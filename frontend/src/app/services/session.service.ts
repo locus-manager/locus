@@ -14,7 +14,7 @@ export class SessionService {
   verifyActiveCheckin(email: string) {
     const queryActiveCheckin = gql`
       query activeCheckIn($email: String!) {
-        activeCheckin(email: $email) { id }
+        activeCheckin(email: $email) { id, placeId }
       }
     `;
 
