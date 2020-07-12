@@ -6,8 +6,8 @@ export interface User {
 
 export interface Place {
   id: string;
-  code: string;
   name: string;
+  floor: string;
 }
 
 export interface Session {
