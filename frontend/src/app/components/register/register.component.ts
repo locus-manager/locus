@@ -12,6 +12,7 @@ import {
 } from '@po-ui/ng-components';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Place } from '../../models/app.model';
+import * as moment from 'moment';
 
 @Component({
   selector: 'app-register',
@@ -57,7 +58,8 @@ export class RegisterComponent implements OnInit {
     this.fetchForm();
   }
 
-  public setName(event) {
+  public setNameAndType(event) {
+    this.setType(event);
     const at = event.indexOf('@');
     const domain = event.substring(at);
 
@@ -68,7 +70,14 @@ export class RegisterComponent implements OnInit {
         name: capitalize
       });
     }
+  }
 
+  public validateHour(event) {
+    const informedHourIsValid = moment(event, 'HH:mm', true).isValid();
+    const currentHour = moment().format('HH:mm');
+    if (!informedHourIsValid || event > currentHour) {
+      this.registerForm.controls.checkin.setErrors({ incorrect: true });
+    }
   }
 
   public submit({value, valid}: {value: any, valid: boolean}) {
@@ -112,21 +121,24 @@ export class RegisterComponent implements OnInit {
     const register = this.storageService.getInStorage();
     if (register !== null) {
       this.registerForm.patchValue(register);
-
       if (register.email) {
-        this.sessionService.verifyActiveCheckin(register.email).subscribe((session: any[]) => {
-          if (session.length === 0) {
-            this.registerForm.patchValue({ type: 'checkin' });
-          } else {
-            this.registerForm.patchValue({ type: 'checkout' });
-          }
-        });
+        this.setType(register.email);
       }
     }
 
     if (code) {
       this.registerForm.patchValue({ code });
     }
+  }
+
+  private setType(email: string) {
+    this.sessionService.verifyActiveCheckin(email).subscribe((session: any[]) => {
+      if (session.length === 0) {
+        this.registerForm.patchValue({ type: 'checkin' });
+      } else {
+        this.registerForm.patchValue({ type: 'checkout' });
+      }
+    });
   }
 
   private saveRegister({value}: {value: any}) {

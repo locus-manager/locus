@@ -19,7 +19,7 @@
     margin-top: 8px;
   }
 
-  .po-input {
+  .po-input, .po-radio-group-input+.po-radio-group-label:before {
     box-shadow: none
   }
 }
