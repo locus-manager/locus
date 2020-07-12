@@ -49,13 +49,12 @@ export class RegisterComponent implements OnInit {
       email: ['', Validators.required],
       phone: ['', Validators.required],
       type: ['', Validators.required],
-      code: [''],
+      code: ['', Validators.required],
       checkin: [''],
     });
 
     this.initVariables();
     this.getPlace();
-    this.fetchForm();
   }
 
   public setNameAndType(event) {
@@ -63,12 +62,12 @@ export class RegisterComponent implements OnInit {
     const at = event.indexOf('@');
     const domain = event.substring(at);
 
-    if (domain === '@***REMOVED***.com.br' && !this.registerForm.value.name) {
+    if (domain === '@***REMOVED***.com.br') {
+      this.registerForm.patchValue({ name: '' });
       const emailName = event.substring(0, at);
-      const capitalize = emailName.split('.').map(w => w.substring(0, 1).toUpperCase() + w.substring(1)).join(' ');
-      this.registerForm.patchValue({
-        name: capitalize
-      });
+      const capitalize = emailName.split('.')
+        .map(w => w.substring(0, 1).toUpperCase() + w.substring(1)).join(' ');
+      this.registerForm.patchValue({ name: capitalize });
     }
   }
 
@@ -81,7 +80,7 @@ export class RegisterComponent implements OnInit {
   }
 
   public submit({value, valid}: {value: any, valid: boolean}) {
-    if (!this.place) {
+    if (!this.place.id) {
       this.modalError.open();
       return;
     }
@@ -108,16 +107,17 @@ export class RegisterComponent implements OnInit {
   private getPlace() {
     const { code } = this.route.snapshot.queryParams;
     this.sessionService.getPlace(code).subscribe(
-      place => { this.place = place[0]; },
-      error => {
+      place => {
+        this.place = place[0];
+        this.fetchForm();
+      },
+      () => {
         this.modalError.open();
-        console.error(error);
       }
     );
   }
 
   private fetchForm() {
-    const { code } = this.route.snapshot.queryParams;
     const register = this.storageService.getInStorage();
     if (register !== null) {
       this.registerForm.patchValue(register);
@@ -126,19 +126,20 @@ export class RegisterComponent implements OnInit {
       }
     }
 
-    if (code) {
-      this.registerForm.patchValue({ code });
-    }
+    this.registerForm.patchValue({ code: this.place.id });
   }
 
   private setType(email: string) {
-    this.sessionService.verifyActiveCheckin(email).subscribe((session: any[]) => {
-      if (session.length === 0) {
-        this.registerForm.patchValue({ type: 'checkin' });
-      } else {
-        this.registerForm.patchValue({ type: 'checkout' });
-      }
-    });
+    if (!this.registerForm.value.type) {
+      this.sessionService.verifyActiveCheckin(email).subscribe((session: any[]) => {
+        if (session.length === 0 ||
+          (session[0]?.placeId !== this.place.id)) {
+          this.registerForm.patchValue({ type: 'checkin' });
+        } else {
+          this.registerForm.patchValue({ type: 'checkout' });
+        }
+      });
+    }
   }
 
   private saveRegister({value}: {value: any}) {
