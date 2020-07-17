@@ -2,12 +2,30 @@
   "name": "frontend",
   "version": "0.0.0",
   "scripts": {
-    "ng": "ng",
+    "ng": "nx",
     "start": "node server.js",
     "build": "ng build --prod",
     "test": "ng test",
-    "lint": "ng lint",
-    "e2e": "ng e2e"
+    "lint": "nx workspace-lint && ng lint",
+    "e2e": "ng e2e",
+    "nx": "nx",
+    "affected:apps": "nx affected:apps",
+    "affected:libs": "nx affected:libs",
+    "affected:build": "nx affected:build",
+    "affected:e2e": "nx affected:e2e",
+    "affected:test": "nx affected:test",
+    "affected:lint": "nx affected:lint",
+    "affected:dep-graph": "nx affected:dep-graph",
+    "affected": "nx affected",
+    "format": "nx format:write",
+    "format:write": "nx format:write",
+    "format:check": "nx format:check",
+    "update": "ng update @nrwl/workspace",
+    "update:check": "ng update",
+    "dep-graph": "nx dep-graph",
+    "workspace-schematic": "nx workspace-schematic",
+    "help": "nx help",
+    "postinstall": "node ./decorate-angular-cli.js"
   },
   "private": true,
   "dependencies": {
@@ -20,6 +38,7 @@
     "@angular/platform-browser-dynamic": "~9.1.11",
     "@angular/router": "~9.1.11",
     "@ngneat/transloco": "^2.17.2",
+    "@nrwl/workspace": "^9.5.1",
     "@po-ui/ng-components": "^2.7.0",
     "@***REMOVED***/po-theme": "^2.7.0",
     "@zxing/ngx-scanner": "^3.0.0",
@@ -31,10 +50,11 @@
     "express": "^4.17.1",
     "graphql": "^14.6.0",
     "graphql-tag": "^2.10.0",
+    "moment": "^2.22.2",
     "rxjs": "~6.5.4",
     "tslib": "^1.10.0",
     "zone.js": "~0.10.2",
-    "moment": "^2.22.2"
+    "@nrwl/angular": "9.5.1"
   },
   "devDependencies": {
     "@angular-devkit/build-angular": "~0.901.9",
@@ -54,6 +74,8 @@
     "protractor": "~7.0.0",
     "ts-node": "~8.3.0",
     "tslint": "~6.1.0",
-    "typescript": "~3.8.3"
+    "typescript": "~3.8.3",
+    "@nrwl/workspace": "9.5.1",
+    "prettier": "2.0.4"
   }
 }
