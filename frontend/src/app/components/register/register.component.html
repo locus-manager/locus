@@ -84,6 +84,9 @@
       p-mask-format-model="true"
       (p-change)="validateHour($event)"
     ></po-input>
+    <p *ngIf="invalidTime" class="color-text-danger">
+      A hora informada deve ser menor que hora atual!
+    </p>
   </po-modal>
 
   <po-modal
