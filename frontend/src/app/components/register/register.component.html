@@ -52,6 +52,7 @@
         name="type"
         formControlName="type"
         [p-options]="options"
+        (p-change)="clearCheckinField($event)"
       ></po-radio-group>
     </div>
 
@@ -82,6 +83,7 @@
       p-label="Qual o horário aproximado da entrada?"
       formControlName="checkin"
       p-mask-format-model="true"
+      [p-required]="isRequired"
       (p-change)="validateHour($event)"
     ></po-input>
     <p *ngIf="invalidTime" class="color-text-danger">
