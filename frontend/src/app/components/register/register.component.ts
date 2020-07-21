@@ -31,6 +31,7 @@ export class RegisterComponent implements OnInit {
   public options: PoRadioGroupOption[] = [];
   public registerForm: FormGroup;
   public loading = false;
+  public invalidTime = false;
   public place: Place;
 
   constructor(
@@ -74,9 +75,13 @@ export class RegisterComponent implements OnInit {
   public validateHour(event) {
     const informedHourIsValid = moment(event, 'HH:mm', true).isValid();
     const currentHour = moment().format('HH:mm');
-    if (!informedHourIsValid || event > currentHour) {
+    if (!informedHourIsValid || event >= currentHour) {
       this.registerForm.controls.checkin.setErrors({ incorrect: true });
+      this.invalidTime = true;
+      return false;
     }
+    this.invalidTime = false;
+    return true;
   }
 
   public submit({value, valid}: {value: any, valid: boolean}) {
@@ -86,6 +91,11 @@ export class RegisterComponent implements OnInit {
     }
 
     if (!valid) {
+      if (!this.registerForm.controls.checkin.valid) {
+        this.invalidTime = false;
+        this.modalCheckin.open();
+      }
+
       this.markFormAsDirty(this.registerForm);
 
       return this.poNotificationService.warning({
@@ -93,8 +103,6 @@ export class RegisterComponent implements OnInit {
         orientation: PoToasterOrientation.Top,
       });
     }
-
-    this.loading = true;
 
     if (value.type === 'checkout') {
       this.verifyActiveCheckIn(value);
@@ -143,6 +151,7 @@ export class RegisterComponent implements OnInit {
   }
 
   private saveRegister({value}: {value: any}) {
+    this.loading = true;
     this.storageService.setInStorage(
       { name: value.name, email: value.email, phone: value.phone }
     );
@@ -167,6 +176,7 @@ export class RegisterComponent implements OnInit {
   private verifyActiveCheckIn(value) {
     this.sessionService.verifyActiveCheckin(value.email).subscribe((session: any[]) => {
       if (session.length === 0) {
+        this.invalidTime = false;
         this.modalCheckin.open();
       } else {
         this.saveRegister(this.registerForm);
@@ -190,12 +200,11 @@ export class RegisterComponent implements OnInit {
     }
   }
 
-  // TODO: Verificar tradução
   private initVariables() {
     this.saveCheckin = {
       label: 'Enviar',
       action: () => {
-        if (this.registerForm.valid) {
+        if (this.validateHour(this.registerForm.value.checkin) && this.registerForm.valid) {
           this.saveRegister(this.registerForm);
           this.modalCheckin.close();
         }
