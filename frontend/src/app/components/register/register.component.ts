@@ -32,6 +32,7 @@ export class RegisterComponent implements OnInit {
   public registerForm: FormGroup;
   public loading = false;
   public invalidTime = false;
+  public isRequired = false;
   public place: Place;
 
   constructor(
@@ -82,6 +83,15 @@ export class RegisterComponent implements OnInit {
     }
     this.invalidTime = false;
     return true;
+  }
+
+  public clearCheckinField(type) {
+    if (type === 'checkin') {
+      this.isRequired = false;
+      this.registerForm.markAsPristine();
+      this.registerForm.patchValue({checkin: ''});
+      this.registerForm.controls.checkin.setErrors(null);
+    }
   }
 
   public submit({value, valid}: {value: any, valid: boolean}) {
@@ -161,6 +171,8 @@ export class RegisterComponent implements OnInit {
         this.registerForm.markAsPristine();
         this.modalSuccess.open();
         this.loading = false;
+        this.invalidTime = false;
+        this.isRequired = false;
       },
       (error) => {
         console.error(error);
@@ -177,6 +189,7 @@ export class RegisterComponent implements OnInit {
     this.sessionService.verifyActiveCheckin(value.email).subscribe((session: any[]) => {
       if (session.length === 0) {
         this.invalidTime = false;
+        this.isRequired = true;
         this.modalCheckin.open();
       } else {
         this.saveRegister(this.registerForm);
@@ -204,7 +217,7 @@ export class RegisterComponent implements OnInit {
     this.saveCheckin = {
       label: 'Enviar',
       action: () => {
-        if (this.validateHour(this.registerForm.value.checkin) && this.registerForm.valid) {
+        if (this.registerForm.valid && this.validateHour(this.registerForm.value.checkin)) {
           this.saveRegister(this.registerForm);
           this.modalCheckin.close();
         }
