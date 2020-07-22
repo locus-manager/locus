@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+  <meta http-equiv="Content - Type" content="" charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+  <title>QR Code Locus</title>
+  <style type="text/css">
+    body {
+      font-family: Lato;
+      color: #FFFFFF;
+    }
+
+    .flex {
+      display: flex;
+      align-items: center;
+      flex-direction: column;
+      justify-content: space-evenly;
+    }
+
+    .content {
+      margin: 0 auto 1cm;
+      width: 594.1px;
+      height: 840.8px;
+      font-size: 30px;
+      background-image: url("/fundo.svg"), linear-gradient(-225deg, #0C3FAB 0%, #0c5aab 51%, #258AD4 100%);
+    }
+
+    .titles {
+      text-transform: uppercase;
+      text-align: center;
+    }
+
+    h1 {
+      font-size: 2em;
+      font-weight: 900;
+      line-height: 1.2;
+      margin: 15px 0;
+      color: #49F3C4;
+      font-stretch: normal;
+      font-style: normal;
+      letter-spacing: normal;
+    }
+
+    h2 {
+      font-size: 1em;
+      margin: 10px 0;
+      font-weight: 800;
+    }
+
+    h3 {
+      font-size: .55em;
+      text-align: center;
+      text-transform: uppercase;
+      letter-spacing: .4px;
+    }
+
+    p {
+      font-size: .45em;
+      line-height: 1.4;
+      letter-spacing: .8px;
+      text-align: center;
+    }
+
+    strong {
+      font-size: 1.2em;
+      color: #4BF2C4;
+      display: block;
+    }
+
+    .qrcode-square {
+      width: 412.5px;
+      height: 475.3px;
+      border-radius: 28px;
+      background-color: #0734A4;
+    }
+
+    .qrcode {
+      width: 300px;
+      height: 300px;
+      border-radius: 20.8px;
+      background-color: #FFFFFF;
+      justify-content: center;
+      align-items: center;
+      display: flex;
+    }
+
+    .qrcode img {
+      width: 290px;
+      height: 290px;
+      border-radius: 20.8px;
+    }
+
+    .footer img {
+      width: 135.1px;
+      height: 40.2px;
+    }
+  </style>
+</head>
+
+<body>
+{{#each places}}
+  <div class="content flex">
+    <section class="titles">
+      <h1>{{this.name}}</h1>
+      <h1>{{ message }}</h1>
+      <h2>Faça seu check-in e checkout</h2>
+    </section>
+
+    <section class="qrcode-square flex">
+      <h3>Use o leitor de QR Code do seu celular</h3>
+      <div class="qrcode">
+        <img src="{{this.qrCode}}" alt="{{this.name}}">
+      </div>
+      <div>
+        <p>
+          Caso você não consiga ler o QR Code,<br> digite este endereço no seu navegador
+          <strong>locus.***REMOVED***</strong>
+        </p>
+      </div>
+    </section>
+
+    <section class="footer">
+      <img src="/logo-branca-totvs.svg" alt="LOGO-***REMOVED***">
+    </section>
+  </div>
+{{/each}}
+</body>
+</html>

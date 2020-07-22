@@ -2,13 +2,34 @@ version: "3.7"
 services:
   locus-frontend:
     build:
-      dockerfile: Dockerfile
+      dockerfile: Dockerfile.frontend
       context: .
     networks:
-      - locus-frontend-network
+      - locus-network
     ports:
       - "80:80"
 
+  locus-backend:
+    build:
+      dockerfile: Dockerfile.backend
+      context: .
+    networks:
+      - locus-network
+    ports:
+      - '8080:4333'
+    environment:
+      - DATABASE_URL=postgres://postgres:root@locus_postgresql:5432/locus
+
+#  locus-postgresql:
+#    image: postgres
+#    ports:
+#      - "5432:5432"
+#    environment:
+#      - POSTGRES_PASSWORD=root
+#    networks:
+#      - locus-network
+#    container_name: locus_postgresql
+
 networks:
-  locus-frontend-network:
+  locus-network:
     driver: bridge
