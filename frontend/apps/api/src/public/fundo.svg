@@ -1,0 +1,31 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="595.276" height="841.89" viewBox="0 0 595.276 841.89">
+  <defs>
+    <clipPath id="clip-Artboard_1_1">
+      <rect width="595.276" height="841.89"/>
+    </clipPath>
+  </defs>
+  <g id="Artboard_1_1" data-name="Artboard 1 – 1" clip-path="url(#clip-Artboard_1_1)">
+    <rect width="595.276" height="841.89" fill="transparent"/>
+    <path id="Path_3" data-name="Path 3" d="M64.392,844.846l195.362-462.6Z" fill="#f7a720"/>
+    <path id="Path_4" data-name="Path 4" d="M421.633-1.057,300.77,285.13Z" fill="#f7a720"/>
+    <g id="Group_7" data-name="Group 7">
+      <g id="Group_3" data-name="Group 3">
+        <path id="Path_6" data-name="Path 6" d="M15.769,491.507A17.325,17.325,0,0,1-.172,467.449L210.917-36.526A17.312,17.312,0,0,1,233.6-45.738a17.314,17.314,0,0,1,9.211,22.688L31.727,480.926A17.317,17.317,0,0,1,15.769,491.507Z" fill="none" stroke="rgba(0,0,0,0.15)" stroke-width="1"/>
+        <line id="Line_4" data-name="Line 4" y1="596.12" x2="245.802" transform="translate(-414.775 552.777)" fill="none" stroke="#4f443e" stroke-miterlimit="10" stroke-width="1"/>
+        <line id="Line_5" data-name="Line 5" y1="596.12" x2="245.802" transform="translate(-400.342 465.906)" fill="none" stroke="#f6a721" stroke-miterlimit="10" stroke-width="1"/>
+      </g>
+      <path id="Path_1" data-name="Path 1" d="M251.495,1255.889a22.616,22.616,0,0,1-20.81-31.405L506.242,566.592a22.6,22.6,0,1,1,41.641,17.592L272.326,1242.077a22.606,22.606,0,0,1-20.831,13.812" fill="#27b4c3"/>
+      <path id="Path_2" data-name="Path 2" d="M184.67,1180.01a22.615,22.615,0,0,1-20.81-31.405L439.417,490.713A22.6,22.6,0,1,1,481.058,508.3L205.5,1166.2A22.606,22.606,0,0,1,184.67,1180.01Z" fill="none" stroke="#099bbf" stroke-width="1"/>
+      <line id="Line_1" data-name="Line 1" x1="195.363" y2="462.595" transform="translate(64.391 382.251)" fill="none" stroke="#27b4c3" stroke-width="1"/>
+      <g id="Group_2" data-name="Group 2">
+        <g id="Group_1" data-name="Group 1">
+          <line id="Line_2" data-name="Line 2" x1="120.862" y2="286.187" transform="translate(421.633 58.564)" fill="none" stroke="#27b4c3" stroke-miterlimit="10" stroke-width="1"/>
+        </g>
+        <path id="Path_5" data-name="Path 5" d="M478.38,205.77a3.247,3.247,0,0,0,5.7-.536l91.27-216.115a3.242,3.242,0,0,0-.287-3.058,3.242,3.242,0,0,0-2.706-1.451,3.242,3.242,0,0,0-2.994,1.988l-91.27,216.115a3.24,3.24,0,0,0,.288,3.057" fill="#27b4c3"/>
+      </g>
+      <line id="Line_3" data-name="Line 3" y1="180.459" x2="74.526" transform="translate(50.563 572.389)" fill="none" stroke="#27b4c3" stroke-linecap="round" stroke-miterlimit="10" stroke-width="6"/>
+      <path id="Path_7" data-name="Path 7" d="M-37.868,507.707a17.247,17.247,0,0,1-6.73-1.37,17.314,17.314,0,0,1-9.211-22.688L157.28-20.326a17.312,17.312,0,0,1,22.688-9.212A17.314,17.314,0,0,1,189.179-6.85L-21.91,497.126A17.318,17.318,0,0,1-37.868,507.707Z" fill="none" stroke="#099bbf" stroke-width="1"/>
+    </g>
+    <rect id="Rectangle_3" data-name="Rectangle 3" width="595.276" height="841.89" transform="translate(-1.188 -1.057)" fill="none"/>
+  </g>
+</svg>

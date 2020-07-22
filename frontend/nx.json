@@ -16,6 +16,9 @@
     },
     "frontend-e2e": {
       "tags": []
+    },
+    "api": {
+      "tags": []
     }
   }
 }
