@@ -5,7 +5,6 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { PoModule } from '@po-ui/ng-components';
 import { RegisterComponent } from './components/register/register.component';
-import { GraphQLModule } from './graphql.module';
 import { HttpClientModule } from '@angular/common/http';
 import { ReactiveFormsModule } from '@angular/forms';
 import { TranslocoModule } from '@ngneat/transloco';
@@ -14,22 +13,17 @@ import { ZXingScannerModule } from '@zxing/ngx-scanner';
 import { TranslocoRootModule } from './transloco-root.module';
 
 @NgModule({
-  declarations: [
-    AppComponent,
-    RegisterComponent,
-    QrcodeComponent
-  ],
+  declarations: [AppComponent, RegisterComponent, QrcodeComponent],
   imports: [
     BrowserModule,
     AppRoutingModule,
     PoModule,
-    GraphQLModule,
     HttpClientModule,
     ReactiveFormsModule,
     ZXingScannerModule,
     TranslocoModule,
-    TranslocoRootModule
+    TranslocoRootModule,
   ],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent],
 })
 export class AppModule {}

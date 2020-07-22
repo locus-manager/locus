@@ -1,5 +1,11 @@
-import {Component, OnInit, ViewChild} from '@angular/core';
-import {AbstractControl, FormArray, FormBuilder, FormGroup, Validators} from '@angular/forms';
+import { Component, OnInit, ViewChild } from '@angular/core';
+import {
+  AbstractControl,
+  FormArray,
+  FormBuilder,
+  FormGroup,
+  Validators,
+} from '@angular/forms';
 import { TranslocoService } from '@ngneat/transloco';
 import { SessionService } from '../../services/session.service';
 import { LocalStorageService } from '../../services/local-storage.service';
@@ -8,7 +14,7 @@ import {
   PoModalComponent,
   PoNotificationService,
   PoRadioGroupOption,
-  PoToasterOrientation
+  PoToasterOrientation,
 } from '@po-ui/ng-components';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Place } from '../../models/app.model';
@@ -17,7 +23,7 @@ import * as moment from 'moment';
 @Component({
   selector: 'app-register',
   templateUrl: './register.component.html',
-  styleUrls: ['./register.component.scss']
+  styleUrls: ['./register.component.scss'],
 })
 export class RegisterComponent implements OnInit {
   @ViewChild('checkin', { static: true }) modalCheckin: PoModalComponent;
@@ -42,11 +48,11 @@ export class RegisterComponent implements OnInit {
     private sessionService: SessionService,
     private translateService: TranslocoService,
     private storageService: LocalStorageService,
-    private poNotificationService: PoNotificationService,
-  ) { }
+    private poNotificationService: PoNotificationService
+  ) {}
 
   ngOnInit() {
-    this.registerForm = this.formBuilder.group( {
+    this.registerForm = this.formBuilder.group({
       name: ['', Validators.required],
       email: ['', Validators.required],
       phone: ['', Validators.required],
@@ -67,8 +73,10 @@ export class RegisterComponent implements OnInit {
     if (domain === '@totvs.com.br') {
       this.registerForm.patchValue({ name: '' });
       const emailName = event.substring(0, at);
-      const capitalize = emailName.split('.')
-        .map(w => w.substring(0, 1).toUpperCase() + w.substring(1)).join(' ');
+      const capitalize = emailName
+        .split('.')
+        .map((w) => w.substring(0, 1).toUpperCase() + w.substring(1))
+        .join(' ');
       this.registerForm.patchValue({ name: capitalize });
     }
   }
@@ -89,12 +97,12 @@ export class RegisterComponent implements OnInit {
     if (type === 'checkin') {
       this.isRequired = false;
       this.registerForm.markAsPristine();
-      this.registerForm.patchValue({checkin: ''});
+      this.registerForm.patchValue({ checkin: '' });
       this.registerForm.controls.checkin.setErrors(null);
     }
   }
 
-  public submit({value, valid}: {value: any, valid: boolean}) {
+  public submit({ value, valid }: { value: any; valid: boolean }) {
     if (!this.place.id) {
       this.modalError.open();
       return;
@@ -125,8 +133,8 @@ export class RegisterComponent implements OnInit {
   private getPlace() {
     const { code } = this.route.snapshot.queryParams;
     this.sessionService.getPlace(code).subscribe(
-      place => {
-        this.place = place[0];
+      (place) => {
+        this.place = place;
         this.fetchForm();
       },
       () => {
@@ -149,22 +157,25 @@ export class RegisterComponent implements OnInit {
 
   private setType(email: string) {
     if (!this.registerForm.value.type) {
-      this.sessionService.verifyActiveCheckin(email).subscribe((session: any[]) => {
-        if (session.length === 0 ||
-          (session[0]?.placeId !== this.place.id)) {
-          this.registerForm.patchValue({ type: 'checkin' });
-        } else {
-          this.registerForm.patchValue({ type: 'checkout' });
-        }
-      });
+      this.sessionService
+        .verifyActiveCheckin(email)
+        .subscribe((session: any[]) => {
+          if (session.length === 0 || session[0]?.placeId !== this.place.id) {
+            this.registerForm.patchValue({ type: 'checkin' });
+          } else {
+            this.registerForm.patchValue({ type: 'checkout' });
+          }
+        });
     }
   }
 
-  private saveRegister({value}: {value: any}) {
+  private saveRegister({ value }: { value: any }) {
     this.loading = true;
-    this.storageService.setInStorage(
-      { name: value.name, email: value.email, phone: value.phone }
-    );
+    this.storageService.setInStorage({
+      name: value.name,
+      email: value.email,
+      phone: value.phone,
+    });
 
     this.sessionService.createSession(value).subscribe(
       () => {
@@ -178,7 +189,8 @@ export class RegisterComponent implements OnInit {
         console.error(error);
         this.loading = false;
         return this.poNotificationService.error({
-          message: 'Desculpe! Ocorreu um erro não esperado, por favor tente novamente!',
+          message:
+            'Desculpe! Ocorreu um erro não esperado, por favor tente novamente!',
           orientation: PoToasterOrientation.Top,
         });
       }
@@ -186,19 +198,21 @@ export class RegisterComponent implements OnInit {
   }
 
   private verifyActiveCheckIn(value) {
-    this.sessionService.verifyActiveCheckin(value.email).subscribe((session: any[]) => {
-      if (session.length === 0) {
-        this.invalidTime = false;
-        this.isRequired = true;
-        this.modalCheckin.open();
-      } else {
-        this.saveRegister(this.registerForm);
-      }
-    });
+    this.sessionService
+      .verifyActiveCheckin(value.email)
+      .subscribe((session: any[]) => {
+        if (session.length === 0) {
+          this.invalidTime = false;
+          this.isRequired = true;
+          this.modalCheckin.open();
+        } else {
+          this.saveRegister(this.registerForm);
+        }
+      });
   }
 
   private markFormAsDirty(form: FormGroup) {
-    Object.keys(form.controls).forEach(key => {
+    Object.keys(form.controls).forEach((key) => {
       this.markControlAsDirty(form.controls[key]);
     });
   }
@@ -209,7 +223,7 @@ export class RegisterComponent implements OnInit {
     if (control instanceof FormGroup) {
       this.markFormAsDirty(control);
     } else if (control instanceof FormArray) {
-      control.controls.forEach(element => this.markControlAsDirty(element));
+      control.controls.forEach((element) => this.markControlAsDirty(element));
     }
   }
 
@@ -217,18 +231,21 @@ export class RegisterComponent implements OnInit {
     this.saveCheckin = {
       label: 'Enviar',
       action: () => {
-        if (this.registerForm.valid && this.validateHour(this.registerForm.value.checkin)) {
+        if (
+          this.registerForm.valid &&
+          this.validateHour(this.registerForm.value.checkin)
+        ) {
           this.saveRegister(this.registerForm);
           this.modalCheckin.close();
         }
-      }
+      },
     };
     this.closeModalCheckin = {
       label: 'Cancelar',
       action: () => {
         this.loading = false;
         this.modalCheckin.close();
-      }
+      },
     };
 
     this.redirect = {
@@ -240,19 +257,20 @@ export class RegisterComponent implements OnInit {
           this.modalError.close();
         }
         this.router.navigate(['/']);
-      }
+      },
     };
 
     this.closeModalSuccess = {
       label: 'Sair',
       action: () => {
-        window.location.href = 'https://produtos.totvs.com/produto/totvs-hospitalidade/pdv/';
-      }
+        window.location.href =
+          'https://produtos.totvs.com/produto/totvs-hospitalidade/pdv/';
+      },
     };
 
     this.options = [
       { label: 'Entrada', value: 'checkin' },
-      { label: 'Saída', value: 'checkout' }
+      { label: 'Saída', value: 'checkout' },
     ];
   }
 }
