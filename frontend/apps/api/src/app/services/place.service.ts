@@ -2,6 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Place } from '../entities/place.entity';
+import { v4 as uuidv4 } from 'uuid';
 
 @Injectable()
 export class PlaceService {
@@ -19,6 +20,7 @@ export class PlaceService {
   }
 
   save(place: Place): Promise<Place> {
+    place.id = place.id || uuidv4();
     return this.placeRepository.save(place)
   }
 }

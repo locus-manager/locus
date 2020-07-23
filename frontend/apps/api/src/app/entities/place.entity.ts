@@ -1,10 +1,10 @@
 import {
   BeforeInsert,
+  BeforeUpdate,
   Column,
   Entity,
   OneToMany,
   PrimaryColumn,
-  PrimaryGeneratedColumn
 } from 'typeorm';
 import { Session } from './session.entity';
 import { v4 as uuidv4 } from 'uuid';
@@ -28,10 +28,4 @@ export class Place {
 
   @OneToMany('Session', 'place')
   sessions: Session[];
-
-  @BeforeInsert()
-  private beforeInsert() {
-    this.id = uuidv4();
-  }
-
 }
