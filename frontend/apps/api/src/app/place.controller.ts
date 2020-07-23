@@ -45,7 +45,7 @@ export class PlaceController {
       `${environment.apiUrl}/register?code=${place.id}`
     );
 
-    return { ...place, qrCode };
+    return { places: [{ ...place, qrCode }] };
   }
 
   @Get(':code')
