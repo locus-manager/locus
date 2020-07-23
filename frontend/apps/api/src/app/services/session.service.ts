@@ -5,6 +5,7 @@ import { Session } from '../entities/session.entity';
 import { SessionDto } from '../models/session.dto';
 import { UserService } from './user.service';
 import { User } from '../entities/user.entity';
+import { v4 as uuidv4 } from 'uuid';
 
 @Injectable()
 export class SessionService {
@@ -42,6 +43,7 @@ export class SessionService {
         );
 
         return await this.sessionRepository.save({
+          id: uuidv4(),
           user: { id: user.id },
           place: { id: code },
           checkinDate: currentDate.toISOString(),
@@ -71,6 +73,7 @@ export class SessionService {
               ...datesToBeUpdated,
             })
           : await this.sessionRepository.save({
+              id: uuidv4(),
               user: { id: user.id },
               place: { id: code },
               ...datesToBeUpdated,

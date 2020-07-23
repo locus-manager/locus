@@ -1,8 +1,6 @@
-import { BeforeInsert, Column, Entity, ManyToOne, PrimaryColumn, PrimaryGeneratedColumn } from 'typeorm';
+import { Column, Entity, ManyToOne, PrimaryColumn } from 'typeorm';
 import { User } from './user.entity';
 import { Place } from './place.entity';
-import { v4 as uuidv4 } from 'uuid';
-
 
 @Entity('session')
 export class Session {
@@ -20,9 +18,4 @@ export class Session {
 
   @ManyToOne('User', 'sessions', { eager: true })
   user: User;
-
-  @BeforeInsert()
-  private beforeInsert() {
-    this.id = uuidv4();
-  }
 }
