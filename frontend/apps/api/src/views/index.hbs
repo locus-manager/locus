@@ -3,8 +3,19 @@
 <head>
   <meta http-equiv="Content - Type" content="" charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
-  <title>QR Code Locus</title>
+  <title>QR Code AZUL - Locus</title>
   <style type="text/css">
+    @media print {
+      @page {
+        size: auto;
+        margin: 30mm 25mm 25mm 25mm;
+      }
+
+      .page-break {
+        page-break-after: always;
+      }
+    }
+
     body {
       font-family: Lato;
       color: #FFFFFF;
@@ -18,11 +29,11 @@
     }
 
     .content {
-      margin: 0 auto 1cm;
+      margin: 0 auto;
       width: 594.1px;
       height: 840.8px;
       font-size: 30px;
-      background-image: url("/fundo.svg"), linear-gradient(-225deg, #0C3FAB 0%, #0c5aab 51%, #258AD4 100%);
+      background-image: url("./fundo.svg"), linear-gradient(-225deg, #0C3FAB 0%, #0c5aab 51%, #258AD4 100%);
     }
 
     .titles {
@@ -99,10 +110,9 @@
 
 <body>
 {{#each places}}
-  <div class="content flex">
+  <div class="content flex page-break">
     <section class="titles">
       <h1>{{this.name}}</h1>
-      <h1>{{ message }}</h1>
       <h2>Faça seu check-in e checkout</h2>
     </section>
 
