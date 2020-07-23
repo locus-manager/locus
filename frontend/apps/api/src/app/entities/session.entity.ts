@@ -1,10 +1,12 @@
-import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
+import { BeforeInsert, Column, Entity, ManyToOne, PrimaryColumn, PrimaryGeneratedColumn } from 'typeorm';
 import { User } from './user.entity';
 import { Place } from './place.entity';
+import { v4 as uuidv4 } from 'uuid';
+
 
 @Entity('session')
 export class Session {
-  @PrimaryGeneratedColumn('uuid')
+  @PrimaryColumn({ type: 'uuid' })
   id: string;
 
   @Column({ type: 'timestamp', nullable: true, default: null })
@@ -18,4 +20,9 @@ export class Session {
 
   @ManyToOne('User', 'sessions', { eager: true })
   user: User;
+
+  @BeforeInsert()
+  private beforeInsert() {
+    this.id = uuidv4();
+  }
 }

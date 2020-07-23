@@ -1,9 +1,16 @@
-import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
+import {
+  BeforeInsert,
+  Column,
+  Entity,
+  OneToMany,
+  PrimaryColumn,
+} from 'typeorm';
 import { Session } from './session.entity';
+import { v4 as uuidv4 } from 'uuid';
 
 @Entity()
 export class User {
-  @PrimaryGeneratedColumn('uuid')
+  @PrimaryColumn({ type: 'uuid' })
   id: string;
 
   @Column({ unique: true })
@@ -17,4 +24,9 @@ export class User {
 
   @OneToMany('Session', 'user')
   sessions: Session[];
+
+  @BeforeInsert()
+  private beforeInsert() {
+    this.id = uuidv4();
+  }
 }
