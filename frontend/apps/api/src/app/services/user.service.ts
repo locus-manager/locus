@@ -2,6 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { User } from '../entities/user.entity';
+import { v4 as uuidv4 } from 'uuid';
 
 @Injectable()
 export class UserService {
@@ -21,6 +22,7 @@ export class UserService {
   async save(user: User) {
     const { email } = user;
     const existingUser = await this.userRepository.findOne({ email });
+    user.id = user.id || uuidv4();
 
     return existingUser || this.userRepository.save(user);
   }
