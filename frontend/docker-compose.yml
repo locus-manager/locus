@@ -25,7 +25,10 @@ services:
 #    ports:
 #      - "5432:5432"
 #    environment:
-#      - POSTGRES_PASSWORD=root
+##      - POSTGRES_PASSWORD=root
+#      - POSTGRES_DB=locus
+#      - POSTGRES_USER=u_locus
+#      - POSTGRES_PASSWORD=123456
 #    networks:
 #      - locus-network
 #    container_name: locus_postgresql
