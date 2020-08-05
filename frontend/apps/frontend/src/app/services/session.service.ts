@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Place, Session } from '../models/app.model';
+import { Place, SessionData } from '../models/app.model';
 import { HttpClient } from '@angular/common/http';
 import { environment } from '../../environments/environment';
 import { Observable } from 'rxjs';
@@ -12,15 +12,15 @@ export class SessionService {
 
   constructor(private httpClient: HttpClient) {}
 
-  verifyActiveCheckin(email: string) {
-    return this.httpClient.get(`${this.apiUrl}/sessions/${email}`);
+  verifyActiveCheckin(email: string, placeId: string) {
+    return this.httpClient.get(`${this.apiUrl}/sessions/${email}&${placeId}`);
   }
 
   getPlace(code: string): Observable<Place> {
     return this.httpClient.get<Place>(`${this.apiUrl}/places/${code}`);
   }
 
-  createSession(session: Session) {
+  createSession(session: SessionData) {
     return this.httpClient.post(`${this.apiUrl}/sessions`, session);
   }
 }

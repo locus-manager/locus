@@ -17,7 +17,7 @@ import {
   PoToasterOrientation,
 } from '@po-ui/ng-components';
 import { ActivatedRoute, Router } from '@angular/router';
-import { Place } from '../../models/app.model';
+import { Place, Session } from '../../models/app.model';
 import * as moment from 'moment';
 
 @Component({
@@ -132,15 +132,14 @@ export class RegisterComponent implements OnInit {
 
   private getPlace() {
     const { code } = this.route.snapshot.queryParams;
-    this.sessionService.getPlace(code).subscribe(
-      (place) => {
+    this.sessionService.getPlace(code).subscribe((place) => {
+      if (place) {
         this.place = place;
         this.fetchForm();
-      },
-      () => {
+      } else {
         this.modalError.open();
       }
-    );
+    });
   }
 
   private fetchForm() {
@@ -158,9 +157,9 @@ export class RegisterComponent implements OnInit {
   private setType(email: string) {
     if (!this.registerForm.value.type) {
       this.sessionService
-        .verifyActiveCheckin(email)
-        .subscribe((session: any[]) => {
-          if (session.length === 0 || session[0]?.placeId !== this.place.id) {
+        .verifyActiveCheckin(email, this.place.id)
+        .subscribe((session: Session[]) => {
+          if (session.length === 0) {
             this.registerForm.patchValue({ type: 'checkin' });
           } else {
             this.registerForm.patchValue({ type: 'checkout' });
@@ -199,8 +198,8 @@ export class RegisterComponent implements OnInit {
 
   private verifyActiveCheckIn(value) {
     this.sessionService
-      .verifyActiveCheckin(value.email)
-      .subscribe((session: any[]) => {
+      .verifyActiveCheckin(value.email, value.code)
+      .subscribe((session: Session[]) => {
         if (session.length === 0) {
           this.invalidTime = false;
           this.isRequired = true;
