@@ -19,17 +19,19 @@ export class SessionService {
     return this.sessionRepository.find();
   }
 
-  findActiveCheckin(email: string): Promise<Session[]> {
+  findActiveCheckin(email: string, placeId: string): Promise<Session[]> {
     return this.sessionRepository
       .createQueryBuilder('session')
+      .leftJoinAndSelect('session.place', 'place', 'place.id = session.place_id')
       .select()
       .innerJoin(User, 'user', 'user.id = session.user_id')
       .where('user.email = :email', { email })
+      .andWhere('place_id = :placeId', { placeId })
       .andWhere('session.checkout_date is null')
       .getMany();
   }
 
-  async save(session: SessionDto): Promise<Session | UpdateResult> {
+  async save(session: SessionDto): Promise<Session[] | UpdateResult[]> {
     const { name, email, phone, type, code, checkin } = session;
     const user = await this.userService.save(<User>{ name, email, phone });
     const currentDate = new Date();
@@ -42,12 +44,12 @@ export class SessionService {
           { checkoutDate: currentDate.toISOString() }
         );
 
-        return await this.sessionRepository.save({
+        return await this.sessionRepository.save([{
           id: uuidv4(),
           user: { id: user.id },
           place: { id: code },
           checkinDate: currentDate.toISOString(),
-        });
+        }]);
       case 'checkout':
         const datesToBeUpdated: {
           checkinDate?: string;
@@ -67,17 +69,20 @@ export class SessionService {
           order: { checkinDate: 'DESC' },
         });
 
-        return openSessions.length > 0
-          ? await this.sessionRepository.save({
-              ...openSessions[0],
-              ...datesToBeUpdated,
-            })
-          : await this.sessionRepository.save({
-              id: uuidv4(),
-              user: { id: user.id },
-              place: { id: code },
-              ...datesToBeUpdated,
-            });
+        const newEntity = {
+          id: uuidv4(),
+          user: { id: user.id },
+          place: { id: code },
+          ...datesToBeUpdated,
+        };
+
+        const arraySession = (openSessions.length > 0 && openSessions[0].place.id === code)
+          ? [{ ...openSessions[0], ...datesToBeUpdated }]
+          : (openSessions.length > 0 && openSessions[0].place.id !== code)
+          ? [{ ...openSessions[0], checkoutDate: datesToBeUpdated.checkoutDate }, newEntity ]
+          : [newEntity];
+
+        return await this.sessionRepository.save(arraySession);
     }
   }
 }

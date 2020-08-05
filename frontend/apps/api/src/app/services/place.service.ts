@@ -21,6 +21,6 @@ export class PlaceService {
 
   save(place: Place): Promise<Place> {
     place.id = place.id || uuidv4();
-    return this.placeRepository.save(place)
+    return this.placeRepository.save(place);
   }
 }

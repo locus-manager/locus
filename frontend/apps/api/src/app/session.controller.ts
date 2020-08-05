@@ -13,13 +13,13 @@ export class SessionController {
     private sessionService: SessionService
   ) {}
 
-  @Get(':email')
-  getActiveCheckin(@Param('email') email: string): Promise<Session[]> {
-    return this.sessionService.findActiveCheckin(email);
+  @Get(':email&:placeId')
+  getActiveCheckin(@Param('email') email: string, @Param('placeId') placeId: string): Promise<Session[]> {
+    return this.sessionService.findActiveCheckin(email, placeId);
   }
 
   @Post()
-  createSession(@Body() session: SessionDto): Promise<Session | UpdateResult> {
+  createSession(@Body() session: SessionDto): Promise<Session[] | UpdateResult[]> {
     return this.sessionService.save(session);
   }
 }
