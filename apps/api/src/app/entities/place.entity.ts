@@ -17,6 +17,9 @@ export class Place {
   @Column()
   location: string;
 
+  @Column({ nullable: true, default: null, length: 128 })
+  locationComplement: string;
+
   @Column()
   name: string;
 
