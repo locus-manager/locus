@@ -19,6 +19,13 @@ export class PlaceService {
     return this.placeRepository.findOne({ where: { id } });
   }
 
+  findByLocation(location: string): Promise<Place[]> {
+    return this.placeRepository.find({
+      where: { location },
+      order: { location: 'ASC', floor: 'ASC', sector: 'ASC', name: 'ASC' }
+    });
+  }
+
   save(place: Place): Promise<Place> {
     place.id = place.id || uuidv4();
     return this.placeRepository.save(place);

@@ -36,6 +36,23 @@ export class PlaceController {
     return { places };
   }
 
+  @Get('codes/:location')
+  @Render('index')
+  async getQrCodesByLocation(@Param('location') location: string) {
+    const result = await this.placeService.findByLocation(location);
+    const places = await Promise.all(
+      result.map(async (place) => {
+        const qrCode = await QRCode.toDataURL(
+          `${environment.apiUrl}/register?code=${place.id}`
+        );
+
+        return { ...place, qrCode };
+      })
+    );
+
+    return { places };
+  }
+
   @Get('code/:code')
   @Render('index')
   async getQrCode(@Param('code') code: string) {
