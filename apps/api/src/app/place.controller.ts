@@ -26,6 +26,7 @@ export class PlaceController {
       result.map(async (place) => {
         const qrCode = await QRCode.toDataURL(
           `${environment.apiUrl}/register?code=${place.id}`,
+          { width: 500 }
         );
 
         return { ...place, qrCode };
@@ -42,6 +43,7 @@ export class PlaceController {
 
     const qrCode = await QRCode.toDataURL(
       `${environment.apiUrl}/register?code=${place.id}`,
+      { width: 500 }
     );
 
     return { places: [{ ...place, qrCode }] };
