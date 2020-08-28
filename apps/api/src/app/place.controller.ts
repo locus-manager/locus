@@ -18,24 +18,6 @@ export class PlaceController {
     return this.placeService.findAll();
   }
 
-  @Get('codes')
-  @Render('index')
-  async getQrCodes() {
-    const result = await this.placeService.findAll();
-
-    const places = await Promise.all(
-      result.map(async (place) => {
-        const qrCode = await QRCode.toDataURL(
-          `${environment.apiUrl}/register?code=${place.id}`
-        );
-
-        return { ...place, qrCode };
-      })
-    );
-
-    return { places };
-  }
-
   @Get('codes/:location')
   @Render('index')
   async getQrCodesByLocation(@Param('location') location: string) {
@@ -43,7 +25,9 @@ export class PlaceController {
     const places = await Promise.all(
       result.map(async (place) => {
         const qrCode = await QRCode.toDataURL(
-          `${environment.apiUrl}/register?code=${place.id}`
+          `${environment.apiUrl}/register?code=${place.id}`,
+          { width: 600, quality: 1 }
+
         );
 
         return { ...place, qrCode };
@@ -59,7 +43,8 @@ export class PlaceController {
     const place = await this.placeService.findById(code);
 
     const qrCode = await QRCode.toDataURL(
-      `${environment.apiUrl}/register?code=${place.id}`
+      `${environment.apiUrl}/register?code=${place.id}`,
+      { width: 600, quality: 1 }
     );
 
     return { places: [{ ...place, qrCode }] };
