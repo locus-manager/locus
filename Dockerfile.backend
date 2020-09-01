@@ -3,6 +3,7 @@ FROM node:12
 ARG DATABASE_URL
 
 ENV DATABASE_URL $DATABASE_URL
+ENV PORT 80
 
 # Create app directory
 WORKDIR /usr/src/app
