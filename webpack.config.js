@@ -105,9 +105,11 @@ function generatePackageJson() {
     'class-transformer',
     'class-validator',
     '@nestjs/platform-express',
+    'pg',
     'reflect-metadata',
     'rxjs',
     'tslib',
+    'uuid',
     'swagger-ui-express',
   ];
   const dependencies = implicitDeps.reduce((acc, dep) => {
