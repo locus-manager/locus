@@ -9,5 +9,6 @@ ENV PORT 80
 WORKDIR /usr/src/app
 COPY . /usr/src/app
 
+RUN cd /usr/src/app/dist/apps/api && npm install
 
 CMD [ "node", "dist/apps/api/main.js" ]
