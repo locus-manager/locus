@@ -109,6 +109,7 @@ function generatePackageJson() {
     'reflect-metadata',
     'rxjs',
     'tslib',
+    'hbs',
     'uuid',
     'swagger-ui-express',
   ];
