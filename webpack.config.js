@@ -111,6 +111,7 @@ function generatePackageJson() {
     'tslib',
     'hbs',
     'uuid',
+    'moment',
     'swagger-ui-express',
   ];
   const dependencies = implicitDeps.reduce((acc, dep) => {
