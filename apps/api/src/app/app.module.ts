@@ -14,6 +14,8 @@ import { PlaceController } from './place.controller';
 import { UserController } from './user.controller';
 import { SessionController } from './session.controller';
 import { SnakeNamingStrategy } from 'typeorm-naming-strategies';
+import { ScheduleModule } from '@nestjs/schedule';
+import { TasksService } from './services/tasks/tasks.service';
 
 @Module({
   imports: [
@@ -22,11 +24,23 @@ import { SnakeNamingStrategy } from 'typeorm-naming-strategies';
       url: environment.database,
       autoLoadEntities: true,
       synchronize: true,
-      namingStrategy: new SnakeNamingStrategy()
+      namingStrategy: new SnakeNamingStrategy(),
     }),
+    ScheduleModule.forRoot(),
     TypeOrmModule.forFeature([Place, User, Session]),
   ],
-  controllers: [AppController, PlaceController, UserController, SessionController],
-  providers: [AppService, PlaceService, UserService, SessionService],
+  controllers: [
+    AppController,
+    PlaceController,
+    UserController,
+    SessionController,
+  ],
+  providers: [
+    AppService,
+    PlaceService,
+    UserService,
+    SessionService,
+    TasksService,
+  ],
 })
 export class AppModule {}
