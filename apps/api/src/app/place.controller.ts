@@ -29,6 +29,14 @@ export class PlaceController {
     return this.placeService.find(filter);
   }
 
+  @Get('location/:location')
+  getPlacesByLocation(@Param('location') location: string) {
+    console.log(location);
+    return location
+      ? this.placeService.find({ location })
+      : this.placeService.find();
+  }
+
   @Get('codes/:location')
   @Render('index')
   async getQrCodesByLocation(@Param('location') location: string) {
