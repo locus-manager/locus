@@ -1,4 +1,15 @@
-import { Body, Controller, Get, Param, Post, Render } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Delete,
+  Get,
+  HttpException,
+  HttpStatus,
+  Param,
+  Post,
+  Query,
+  Render,
+} from '@nestjs/common';
 
 import { AppService } from './app.service';
 import { PlaceService } from './services/place.service';
@@ -14,7 +25,7 @@ export class PlaceController {
   ) {}
 
   @Get()
-  getPlaces() {
+  getPlaces(@Query('location') location: string) {
     return this.placeService.findAll();
   }
 
@@ -56,6 +67,23 @@ export class PlaceController {
 
   @Post()
   createPlace(@Body() place: Place) {
-    return this.placeService.save(place);
+    return this.placeService.save([place]);
+  }
+
+  @Post('import')
+  createPlaces(@Body() places: Place[]) {
+    return this.placeService.save(places);
+  }
+
+  @Delete()
+  deletePlaces(@Body() ids: string[]) {
+    if (!ids || !ids[0]) {
+      throw new HttpException(
+        'Select at least one place',
+        HttpStatus.BAD_REQUEST
+      );
+    }
+
+    return this.placeService.delete(ids);
   }
 }
