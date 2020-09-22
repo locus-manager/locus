@@ -25,8 +25,8 @@ export class PlaceController {
   ) {}
 
   @Get()
-  getPlaces(@Query('location') location: string) {
-    return this.placeService.findAll();
+  getPlaces(@Query() filter: { location: string }) {
+    return this.placeService.find(filter);
   }
 
   @Get('codes/:location')

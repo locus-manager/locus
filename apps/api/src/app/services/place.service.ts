@@ -11,7 +11,7 @@ export class PlaceService {
     private placeRepository: Repository<Place>
   ) {}
 
-  findAll(filter?: { location?: string }): Promise<Place[]> {
+  find(filter?: { location?: string }): Promise<Place[]> {
     return this.placeRepository.find(filter);
   }
 
