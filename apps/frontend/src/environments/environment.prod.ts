@@ -1,4 +1,4 @@
 export const environment = {
   production: true,
-  apiUrl: 'https://locus-api.***REMOVED***/api'
+  apiUrl: 'https://locus-app-api.herokuapp.com/api'
 };
