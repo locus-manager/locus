@@ -23,7 +23,7 @@ import { TasksService } from './services/tasks/tasks.service';
       type: 'postgres',
       url: environment.database,
       autoLoadEntities: true,
-      synchronize: false,
+      synchronize: true,
       namingStrategy: new SnakeNamingStrategy(),
     }),
     ScheduleModule.forRoot(),
