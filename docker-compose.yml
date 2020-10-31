@@ -1,4 +1,4 @@
-version: "3.7"
+version: '3.7'
 services:
   locus-frontend:
     build:
@@ -7,7 +7,7 @@ services:
     networks:
       - locus-network
     ports:
-      - "80:80"
+      - '4200:80'
 
   locus-backend:
     build:
@@ -16,22 +16,21 @@ services:
     networks:
       - locus-network
     ports:
-      - '8080:4333'
+      - '3000:3000'
     environment:
       - DATABASE_URL=postgres://postgres:root@locus_postgresql:5432/locus
 
-#  locus-postgresql:
-#    image: postgres
-#    ports:
-#      - "5432:5432"
-#    environment:
-##      - POSTGRES_PASSWORD=root
-#      - POSTGRES_DB=locus
-#      - POSTGRES_USER=u_locus
-#      - POSTGRES_PASSWORD=123456
-#    networks:
-#      - locus-network
-#    container_name: locus_postgresql
+  locus-postgresql:
+    image: postgres:13
+    ports:
+      - "5432:5432"
+    environment:
+      - POSTGRES_DB=locus
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=root
+    networks:
+      - locus-network
+    container_name: locus_postgresql
 
 networks:
   locus-network:

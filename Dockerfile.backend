@@ -1,14 +1,19 @@
-FROM node:12
+FROM node:14.15 AS build
+WORKDIR /usr/src/app
+COPY package.json package-lock.json ./
+RUN npm install
+COPY . .
+RUN npm run build:api
+
+# Create app directory
+FROM node:14.15
+WORKDIR /usr/src/app
 
 ARG DATABASE_URL
 
 ENV DATABASE_URL $DATABASE_URL
-ENV PORT 80
+COPY --from=build /usr/src/app/dist/apps/api .
 
-# Create app directory
-WORKDIR /usr/src/app
-COPY . /usr/src/app
+RUN npm install
 
-RUN cd /usr/src/app/dist/apps/api && npm install
-
-CMD [ "node", "dist/apps/api/main.js" ]
+CMD [ "node", "main.js" ]
