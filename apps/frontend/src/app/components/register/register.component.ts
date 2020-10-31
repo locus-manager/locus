@@ -262,8 +262,7 @@ export class RegisterComponent implements OnInit {
     this.closeModalSuccess = {
       label: 'Sair',
       action: () => {
-        window.location.href =
-          'https://produtos.totvs.com/produto/totvs-hospitalidade/pdv/';
+        window.location.href = 'https://locus.github.io';
       },
     };
 
