@@ -2,8 +2,10 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding: .5em;
+  padding: 0.5em;
   width: 100%;
+  height: 100%;
+  background: #009bbe;
 }
 
 ::ng-deep {
@@ -19,8 +21,9 @@
     margin-top: 8px;
   }
 
-  .po-input, .po-radio-group-input+.po-radio-group-label:before {
-    box-shadow: none
+  .po-input,
+  .po-radio-group-input + .po-radio-group-label:before {
+    box-shadow: none;
   }
 }
 
@@ -31,7 +34,7 @@
 
 h2 {
   margin: 1.5em 0;
-  font-family: NunitoSans-Bold,sans-serif;
+  font-family: NunitoSans-Bold, sans-serif;
   color: #fff;
   font-size: 18px;
   line-height: 24px;
@@ -45,7 +48,7 @@ p.color-text-danger {
 }
 
 .information {
-  margin: .5em 0 1em 0;
+  margin: 0.5em 0 1em 0;
   font-family: NunitoSans-Bold, sans-serif;
   color: #fda71c;
   font-size: 25px;
@@ -71,7 +74,7 @@ img {
 po-modal .error {
   font-size: 40px;
   color: red;
-  margin-bottom: .5em;
+  margin-bottom: 0.5em;
 }
 
 .success-check {
@@ -85,7 +88,7 @@ po-modal .error {
     position: relative;
     border-radius: 50%;
     box-sizing: content-box;
-    border: 4px solid #4CAF50;
+    border: 4px solid #4caf50;
 
     &::before {
       top: 3px;
@@ -104,17 +107,18 @@ po-modal .error {
       animation: rotate-circle 4.25s ease-in;
     }
 
-    &::before, &::after {
+    &::before,
+    &::after {
       content: '';
       height: 100px;
       position: absolute;
-      background: #FFFFFF;
+      background: #ffffff;
       transform: rotate(-45deg);
     }
 
     .icon-line {
       height: 5px;
-      background-color: #4CAF50;
+      background-color: #4caf50;
       display: block;
       border-radius: 2px;
       position: absolute;
@@ -146,7 +150,7 @@ po-modal .error {
       border-radius: 50%;
       position: absolute;
       box-sizing: content-box;
-      border: 4px solid rgba(76, 175, 80, .5);
+      border: 4px solid rgba(76, 175, 80, 0.5);
     }
 
     .icon-fix {
@@ -157,7 +161,7 @@ po-modal .error {
       height: 85px;
       position: absolute;
       transform: rotate(-45deg);
-      background-color: #FFFFFF;
+      background-color: #ffffff;
     }
   }
 }
