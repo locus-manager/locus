@@ -1,0 +1,11 @@
+<h1 class="po-page-header-title">Locus</h1>
+<h3>Para começar, escolha uma das opções abaixo:</h3>
+
+<div>
+  <po-button
+    *ngFor="let menu of menus"
+    [p-label]="menu.label"
+    [p-icon]="menu.icon"
+    (p-click)="menu.action()"
+  ></po-button>
+</div>
