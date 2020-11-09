@@ -10,7 +10,7 @@ import { SessionService } from './services/session.service';
 import { Place } from './entities/place.entity';
 import { Session } from './entities/session.entity';
 import { User } from './entities/user.entity';
-import { PlaceController } from './place.controller';
+import { PlaceController } from './controllers/place.controller';
 import { UserController } from './user.controller';
 import { SessionController } from './session.controller';
 import { SnakeNamingStrategy } from 'typeorm-naming-strategies';

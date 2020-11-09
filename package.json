@@ -52,6 +52,7 @@
     "@nrwl/angular": "9.5.1",
     "@nrwl/workspace": "^9.5.1",
     "@po-ui/ng-components": "^2.7.0",
+    "@po-ui/ng-templates": "^3.10.0",
     "@totvs/po-theme": "^2.7.0",
     "@zxing/ngx-scanner": "2.0.1",
     "apollo-angular": "^1.9.1",

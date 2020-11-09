@@ -3,6 +3,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { DeleteResult, Repository } from 'typeorm';
 import { Place } from '../entities/place.entity';
 import { v4 as uuidv4 } from 'uuid';
+import { GenericFilterDto, mapQuery } from '../common/generic-filter.dto';
 
 @Injectable()
 export class PlaceService {
@@ -11,8 +12,9 @@ export class PlaceService {
     private placeRepository: Repository<Place>
   ) {}
 
-  find(filter?: { location?: string }): Promise<Place[]> {
-    return this.placeRepository.find(filter);
+  find(filter?: GenericFilterDto<Place>): Promise<Place[]> {
+    const elasticSearchAttrs = ['name', 'location', 'name', 'sector', 'floor'];
+    return this.placeRepository.find(mapQuery(filter, elasticSearchAttrs));
   }
 
   findById(id: string): Promise<Place> {
