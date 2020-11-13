@@ -11,30 +11,21 @@ import {
   Render,
 } from '@nestjs/common';
 
-import { AppService } from './app.service';
-import { PlaceService } from './services/place.service';
-import { Place } from './entities/place.entity';
+import { AppService } from '../app.service';
+import { PlaceService } from '../services/place.service';
+import { Place } from '../entities/place.entity';
 import QRCode from 'qrcode';
-import { environment } from '../environments/environment';
+import { environment } from '../../environments/environment';
+import { GenericFilterDto } from '../common/generic-filter.dto';
+import { createPaginationResponse } from '../common/generic-response.dto';
 
 @Controller('places')
 export class PlaceController {
-  constructor(
-    private readonly appService: AppService,
-    private placeService: PlaceService
-  ) {}
+  constructor(private readonly appService: AppService, private placeService: PlaceService) {}
 
   @Get()
-  getPlaces(@Query() filter: { location: string }) {
-    return this.placeService.find(filter);
-  }
-
-  @Get('location/:location')
-  getPlacesByLocation(@Param('location') location: string) {
-    console.log(location);
-    return location
-      ? this.placeService.find({ location })
-      : this.placeService.find();
+  getPlaces(@Query() filter: GenericFilterDto<Place>) {
+    return createPaginationResponse(this.placeService.find(filter));
   }
 
   @Get('codes/:location')
@@ -43,10 +34,9 @@ export class PlaceController {
     const result = await this.placeService.findByLocation(location);
     const places = await Promise.all(
       result.map(async (place) => {
-        const qrCode = await QRCode.toDataURL(
-          `${environment.apiUrl}/register?code=${place.id}`,
-          { width: 500 }
-        );
+        const qrCode = await QRCode.toDataURL(`${environment.apiUrl}/register?code=${place.id}`, {
+          width: 500,
+        });
 
         return { ...place, qrCode };
       })
@@ -60,10 +50,9 @@ export class PlaceController {
   async getQrCode(@Param('code') code: string) {
     const place = await this.placeService.findById(code);
 
-    const qrCode = await QRCode.toDataURL(
-      `${environment.apiUrl}/register?code=${place.id}`,
-      { width: 500 }
-    );
+    const qrCode = await QRCode.toDataURL(`${environment.apiUrl}/register?code=${place.id}`, {
+      width: 500,
+    });
 
     return { places: [{ ...place, qrCode }] };
   }
@@ -86,10 +75,7 @@ export class PlaceController {
   @Delete()
   deletePlaces(@Body() ids: string[]) {
     if (!ids || !ids[0]) {
-      throw new HttpException(
-        'Select at least one place',
-        HttpStatus.BAD_REQUEST
-      );
+      throw new HttpException('Select at least one place', HttpStatus.BAD_REQUEST);
     }
 
     return this.placeService.delete(ids);
