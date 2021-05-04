@@ -3,7 +3,7 @@
 <head>
   <meta http-equiv="Content - Type" content="" charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
-  <title>QR Code AZUL - Locus</title>
+  <title>QR Code - Locus</title>
   <style type="text/css">
     @media print {
       @page {
@@ -33,7 +33,11 @@
       width: 15.7cm;
       height: 22.2cm;
       font-size: 30px;
-      background-image: url("/api/public/fundo.svg"), linear-gradient(-225deg, #0C3FAB 0%, #0c5aab 51%, #258AD4 100%);
+      background-image: url("/api/public/background.png");
+      background-size: cover;
+      background-position: center;
+      background-repeat: no-repeat;
+      border: 1px solid #000;
     }
 
     .titles {
@@ -46,7 +50,7 @@
       font-weight: 900;
       line-height: 1.2;
       margin: 15px 0;
-      color: #49F3C4;
+      color: #4a6e6e;
       font-stretch: normal;
       font-style: normal;
       letter-spacing: normal;
@@ -56,6 +60,7 @@
       font-size: 1em;
       margin: 10px 0;
       font-weight: 800;
+      color: #000;
     }
 
     h3 {
@@ -74,7 +79,7 @@
 
     strong {
       font-size: 1.2em;
-      color: #4BF2C4;
+      color: #a0eaea;
       display: block;
     }
 
@@ -82,7 +87,7 @@
       width: 412.5px;
       height: 475.3px;
       border-radius: 28px;
-      background-color: #0734A4;
+      background-color: rgba(7, 7, 7, 0.4);
     }
 
     .qrcode {
@@ -130,7 +135,7 @@
     </section>
 
     <section class="footer">
-      <img src="/api/public/logo-branca-***REMOVED***.svg" alt="logo">
+      <!-- Você pode adicionar a sua logo aqui -->
     </section>
   </div>
 {{/each}}

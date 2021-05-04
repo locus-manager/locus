@@ -28,7 +28,7 @@
               "apps/frontend/src/assets"
             ],
             "styles": [
-              "./node_modules/@***REMOVED***/po-theme/css/po-theme-default.min.css",
+              "./node_modules/@totvs/po-theme/css/po-theme-default.min.css",
               "apps/frontend/src/styles.scss"
             ],
             "scripts": []

@@ -23,5 +23,5 @@ jobs:
           username: ${{ secrets.DOCKER_USERNAME }}
           password: ${{ secrets.DOCKER_PASSWORD }}
           dockerfile: Dockerfile.backend
-          repository: ***REMOVED***hospitality/locus-backend
+          repository: geekpeak/locus-backend
           tags: latest

@@ -65,22 +65,6 @@ export class RegisterComponent implements OnInit {
     this.getPlace();
   }
 
-  public setNameAndType(event) {
-    this.setType(event);
-    const at = event.indexOf('@');
-    const domain = event.substring(at);
-
-    if (domain === '@***REMOVED***.com.br') {
-      this.registerForm.patchValue({ name: '' });
-      const emailName = event.substring(0, at);
-      const capitalize = emailName
-        .split('.')
-        .map((w) => w.substring(0, 1).toUpperCase() + w.substring(1))
-        .join(' ');
-      this.registerForm.patchValue({ name: capitalize });
-    }
-  }
-
   public validateHour(event) {
     const informedHourIsValid = moment(event, 'HH:mm', true).isValid();
     const currentHour = moment().format('HH:mm');
